@@ -1,10 +1,40 @@
 :root{
-	--background: #F9F8FF;
+	--background: #fff;
+	--secondary: #F9F8FF;
 	--primary: #052684;
 	--grey: #777777;
 	--white: #fff;
 	--accent: #4169E1;
+
+	--shadow: rgba(40, 40, 40, .2);
 }
 body, html{
 	background: var(--background);
+	margin: 0;
+	padding: 0;
+
+	font-family: "Lexend Deca", sans-serif;
+	color: var(--primary);
+}
+
+.ui.icon.input input,
+.ui.selection.dropdown{
+	border: 1px solid var(--primary);
+}
+.ui.icon.input > .search.icon,
+.ui.selection.dropdown > .dropdown.icon{
+	color: var(--accent);
+	opacity: 1;
+}
+.ui.primary.button{
+	background-color: var(--primary);
+}
+.ui.primary.button:hover{
+	background-color: var(--accent);
+}
+
+.ui.dropdown .default.text,
+.ui input::placeholder{
+	color: var(--grey) !important;
+	opacity: .8;
 }

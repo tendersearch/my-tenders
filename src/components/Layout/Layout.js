@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 export default function Layout({ title, description, children }) {
 	const themeColor = "#364aa2";
@@ -19,7 +20,7 @@ export default function Layout({ title, description, children }) {
 			</Head>
 			<Header />
 			<main>{children}</main>
-			<footer></footer>
+			<Footer />
 		</>
 	)
 }
