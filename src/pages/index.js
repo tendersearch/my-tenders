@@ -1,9 +1,19 @@
 import Layout from "../components/Layout/Layout";
 import { Dropdown, Button, Input, Icon } from "semantic-ui-react";
+import { useRouter } from "next/router";
 
 import styles from "../styles/index.module.css";
 
 export default function Home() {
+	const router = useRouter();
+
+	const onKeyUp = (e) => {
+		const value = e.target.value;
+
+		if(e.key === "Enter")
+			router.push(`/search?q=${value}`)
+	}
+
   return (
     <Layout
 		title="My Tenders"
@@ -68,7 +78,7 @@ export default function Home() {
 			</div>
 
 			<div className={styles.search}>
-				<Input fluid icon placeholder="search...">
+				<Input fluid icon placeholder="search..." onKeyUp={onKeyUp}>
 					<input />
 					<Icon name="search" />
 				</Input>

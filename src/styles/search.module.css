@@ -1,0 +1,10 @@
+.results{
+	width: 100%;
+	padding: 0 .5rem 4rem;
+	margin: 2rem auto;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}

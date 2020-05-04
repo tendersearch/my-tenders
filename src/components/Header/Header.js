@@ -13,7 +13,7 @@ export default function Header(){
 	return(
 		<header className={styles.header}>
 			<nav>
-			<div className={classNames(styles.saved, styles.link)}>
+				<div className={classNames(styles.saved, styles.link)}>
 					<Link href="/saved">
 						<a>
 							<SavedIcon />
