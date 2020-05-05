@@ -1,0 +1,4 @@
+{
+	"schemaPath": "./fauna/schema.gql",
+	"secretEnv": "FAUNADB_SECRET"
+}

@@ -1,0 +1,38 @@
+type User{
+	name: String!
+	company: String
+	email: String!
+	keywords: String
+	userId: String! @unique
+
+	savedTenders: [Tender]
+}
+
+type Tender{
+	name: String!
+	state: String!
+	city: String!
+	description: String!
+	endDate: Time!
+	openingDate: Time!
+	estAmount: Int!
+	emd: Int!
+	url: String!
+
+	savedBy: [User]
+}
+
+input CreateUserInput{
+	name: String!
+	email: String!
+	userId: String!
+}
+
+input LoginUserInput{
+	userId: String!
+}
+
+type Mutation{
+	createUser(input: CreateUserInput): User! @resolver(name: "create_user")
+	loginUser(input: LoginUserInput): String! @resolver(name: "login_user")
+}

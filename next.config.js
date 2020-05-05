@@ -10,6 +10,7 @@ module.exports = withImages(withPWA({
 		path.resolve(__dirname, "src/images/icons"),
 		path.resolve(__dirname, "src/images/logo")
 	],
+	target: "serverless",
 	webpack(config) {
 		config.module.rules.push({
 		  test: /\.svg$/,
