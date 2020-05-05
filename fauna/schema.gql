@@ -4,8 +4,14 @@ type User{
 	email: String!
 	keywords: String
 	userId: String! @unique
+	role: Role!
 
 	savedTenders: [Tender]
+}
+
+enum Role{
+	ADMIN
+	USER
 }
 
 type Tender{
