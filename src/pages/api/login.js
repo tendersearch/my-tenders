@@ -2,6 +2,7 @@ const { OAuth2Client } = require("google-auth-library");
 const ApolloClient = require("apollo-boost").default;
 const gql = require("graphql-tag");
 const response = require("../../util/api/response").default;
+const gqlErrors = require("../../util/api/gqlErrors");
 require("isomorphic-fetch");
 
 const google = new OAuth2Client(process.env.GOOGLE_API_KEY);
@@ -58,18 +59,14 @@ export default async (req, res) => {
 
 	// Check if the user trying to log in has an account or not.
 	const userExistsResult = await client.query({ query: USER_EXISTS, variables: { userId } });
-	const userExists = userExistsResult.data.userExists;
+	const { errors, data } = userExistsResult;
+	if(errors) return gqlErrors(errors, res);
+
+	const userExists = data.userExists;
 
 	// Login the user if they exist, or create the user if they don't exist.
 	if(userExists) return loginUser({ userId }, res);
 	if(!userExists) return createUser({ email, name, userId }, res);
-		
-	return response(200, { 
-		message: "Success",
-		name,
-		email,
-		userId
-	}, res);
 }
 
 /**
@@ -101,14 +98,7 @@ async function loginUser(data, res){
 	const { errors, data: result } = loginUserResult;
 
 	// Handle errors
-	if(errors){
-		console.log("Login user errors:", errors);
-
-		if(errorIsPresent("instance not found", errors))
-			return response(404, { message: "Could not find user" }, res);
-
-		throw errors;
-	}
+	if(errors) return gqlErrors(errors, "User", res);
 
 	// Return the response with the secret
 	const secret = result.loginUser;
@@ -129,26 +119,8 @@ async function createUser(data, res){
 	const { errors, data: result } = createUserResult;
 
 	// Handle errors
-	if(errors){
-		console.log("Create user errors:", errors);
+	if(errors) return gqlErrors(errors, "User", res);
 
-		if(errorIsPresent("instance not unique", errors)) 
-			return response(409, { message: "User already exists"}, res);
-
-		if(errorIsPresent("transaction aborted", errors))
-			return response(500, { message: "Service Error" }, res);
-
-		throw errors;
-	}
-
+	// Login if everything went okay.
 	await loginUser(result.createUser, res);
-}
-
-/**
- * Check if a specific error exists within an error response from FaunaDB GraphQL.
- * @param {String}  error - The error to find.
- * @param {Array} errorsArray - An array of errors returned from FaunaDB GraphQL.
- */
-function errorIsPresent(error, errorsArray){
-	return [...errorsArray].some( item => item.extensions.code === error);
 }
