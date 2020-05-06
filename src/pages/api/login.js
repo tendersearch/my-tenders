@@ -72,6 +72,10 @@ export default async (req, res) => {
 	}, res);
 }
 
+/**
+ * Verify token returned from Google sign in
+ * @param {String} token - The string to verify.
+ */
 async function verifyToken(token){
 	try{
 		const ticket = await google.verifyIdToken({
@@ -85,6 +89,12 @@ async function verifyToken(token){
 	}
 }
 
+/**
+ * Login a user by their userId
+ * @param {Object} data - The data to use for login
+ * @param {String} data.userId - The userId to login
+ * @param {Response} res - A response object.
+ */
 async function loginUser(data, res){
 	// Send login request
 	const loginUserResult = await client.mutate({ mutation: LOGIN_USER, variables: data });
@@ -105,6 +115,14 @@ async function loginUser(data, res){
 	response(200, { message: "Success! User logged in.", secret }, res)
 }
 
+/**
+ * Create a user
+ * @param {Object} data - The data to use for creating the user
+ * @param {String} data.name - The user's name
+ * @param {String} data.email - The user's email
+ * @param {String} data.userId - The user's google id
+ * @param {Response} res - A response object
+ */
 async function createUser(data, res){
 	// Send request to create user.
 	const createUserResult = await client.mutate({ mutation: CREATE_USER, variables: data });
