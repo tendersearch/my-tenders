@@ -1,5 +1,5 @@
 const { query } = require("faunadb");
-const { Collection } = query;
+const { Collection, Function: Func } = query;
 
 module.exports = {
 	name: "Guest",
@@ -29,7 +29,12 @@ module.exports = {
 				unrestricted_read: false,
 				call: false
 			}
+		},
+		{
+			resource: Func("current_user"),
+			actions: {
+				call: true
+			}
 		}
-		
 	]
 }
