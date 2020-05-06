@@ -5,7 +5,8 @@ require("dotenv").config();
 
 module.exports = withImages(withPWA({
 	env: {
-		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID
+		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+		FAUNADB_GUEST_KEY: process.env.FAUNADB_GUEST_KEY
 	},
 	pwa: {
 		dest: "public"
