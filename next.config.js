@@ -1,8 +1,12 @@
 const withPWA = require("next-pwa");
 const withImages = require("next-images");
 const path = require("path");
+require("dotenv").config();
 
 module.exports = withImages(withPWA({
+	env: {
+		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID
+	},
 	pwa: {
 		dest: "public"
 	},

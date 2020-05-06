@@ -1,0 +1,16 @@
+.container{
+	box-sizing: border-box;
+	padding: 0 3rem;
+	width: 1000px;
+	max-width: 100%;
+
+	margin: 80px auto;
+}
+.container section{
+	margin: 3rem 0;
+	border-bottom: 1px solid var(--shadow);
+	padding: .5rem 0;
+}
+.container h2{
+	font-size: 1.3rem;
+}

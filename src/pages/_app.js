@@ -2,6 +2,7 @@
 import "typeface-lexend-deca";
 import "semantic-ui-css/semantic.min.css";
 import "../styles/globals.css"
+import "isomorphic-fetch";
 
 function CustomApp({ Component, pageProps }){
 	return <Component {...pageProps} />

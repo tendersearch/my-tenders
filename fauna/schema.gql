@@ -38,7 +38,11 @@ input LoginUserInput{
 	userId: String!
 }
 
+type Query{
+	userExists(userId: String!): Boolean! @resolver(name: "user_exists")
+}
+
 type Mutation{
-	createUser(input: CreateUserInput): User! @resolver(name: "create_user")
-	loginUser(input: LoginUserInput): String! @resolver(name: "login_user")
+	createUser(input: CreateUserInput): User @resolver(name: "create_user")
+	loginUser(input: LoginUserInput): String @resolver(name: "login_user")
 }

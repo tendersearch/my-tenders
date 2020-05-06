@@ -1,0 +1,14 @@
+.container{
+	box-sizing: border-box;
+	padding: 2rem;
+	width: 400px;
+	max-width: 95%;
+	margin: 80px auto;
+	background: var(--secondary);
+	box-shadow: 0 3px 10px var(--shadow);
+
+	text-align: center;
+}
+.googleLogin{
+	margin-top: 2rem;
+}
