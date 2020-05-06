@@ -40,6 +40,7 @@ input LoginUserInput{
 
 type Query{
 	userExists(userId: String!): Boolean! @resolver(name: "user_exists")
+	currentUser: User @resolver(name: "current_user")
 }
 
 type Mutation{
