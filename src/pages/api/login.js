@@ -64,7 +64,7 @@ export default async (req, res) => {
 
 	const userExists = data.userExists;
 
-	// Login the user if they exist, or create the user if they don't exist.
+	// Login the user if they exist. Create the user if they don't exist.
 	if(userExists) return loginUser({ userId }, res);
 	if(!userExists) return createUser({ email, name, userId }, res);
 }
