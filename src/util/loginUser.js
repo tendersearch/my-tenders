@@ -14,9 +14,6 @@ export default async function loginUser(data){
 		})
 	});
 
-	const text = await response.text();
-
-	console.log(text);
 	const result = await response.json();
 
 	if(result.secret) Cookie.set("secret", result.secret);
