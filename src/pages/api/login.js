@@ -40,6 +40,45 @@ mutation($name: String!, $email: String!, $userId: String!){
 }
 `
 
+/**
+ * Login a user by their userId
+ * @param {Object} data - The data to use for login
+ * @param {String} data.userId - The userId to login
+ * @param {Response} res - A response object.
+ */
+async function loginUser(data, res){
+	// Send login request
+	const loginUserResult = await client.mutate({ mutation: LOGIN_USER, variables: data });
+	const { errors, data: result } = loginUserResult;
+
+	// Handle errors
+	if(errors) return gqlErrors(errors, "User", res);
+
+	// Return the response with the secret
+	const secret = result.loginUser;
+	response(200, { message: "Success! User logged in.", secret }, res)
+}
+
+/**
+ * Create a user
+ * @param {Object} data - The data to use for creating the user
+ * @param {String} data.name - The user's name
+ * @param {String} data.email - The user's email
+ * @param {String} data.userId - The user's google id
+ * @param {Response} res - A response object
+ */
+async function createUser(data, res){
+	// Send request to create user.
+	const createUserResult = await client.mutate({ mutation: CREATE_USER, variables: data });
+	const { errors, data: result } = createUserResult;
+
+	// Handle errors
+	if(errors) return gqlErrors(errors, "User", res);
+
+	// Login if everything went okay.
+	await loginUser(result.createUser, res);
+}
+
 export default async (req, res) => {
 	if(req.method !== "POST") return response(404, { message: "Not found" }, res);
 	
@@ -84,43 +123,4 @@ async function verifyToken(token){
 	}catch(err){
 		return null;
 	}
-}
-
-/**
- * Login a user by their userId
- * @param {Object} data - The data to use for login
- * @param {String} data.userId - The userId to login
- * @param {Response} res - A response object.
- */
-async function loginUser(data, res){
-	// Send login request
-	const loginUserResult = await client.mutate({ mutation: LOGIN_USER, variables: data });
-	const { errors, data: result } = loginUserResult;
-
-	// Handle errors
-	if(errors) return gqlErrors(errors, "User", res);
-
-	// Return the response with the secret
-	const secret = result.loginUser;
-	response(200, { message: "Success! User logged in.", secret }, res)
-}
-
-/**
- * Create a user
- * @param {Object} data - The data to use for creating the user
- * @param {String} data.name - The user's name
- * @param {String} data.email - The user's email
- * @param {String} data.userId - The user's google id
- * @param {Response} res - A response object
- */
-async function createUser(data, res){
-	// Send request to create user.
-	const createUserResult = await client.mutate({ mutation: CREATE_USER, variables: data });
-	const { errors, data: result } = createUserResult;
-
-	// Handle errors
-	if(errors) return gqlErrors(errors, "User", res);
-
-	// Login if everything went okay.
-	await loginUser(result.createUser, res);
 }
