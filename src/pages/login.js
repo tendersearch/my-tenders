@@ -22,22 +22,3 @@ export default function login(){
 		</Layout>
 	);
 }
-
-async function loginUser(data){
-	const { accessToken, tokenId } = data;
-
-	const response = await fetch("/api/login", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			accessToken,
-			tokenId
-		})
-	});
-
-	const result = await response.json();
-
-	console.log(result);
-}
