@@ -31,7 +31,7 @@
     "typeface-lexend-deca": "^1.1.3"
   },
   "devDependencies": {
-    "fauna-gql-upload": "^1.2.0",
+    "fauna-gql-upload": "^1.3.0",
     "faunadb": "^2.13.1"
   }
 }
