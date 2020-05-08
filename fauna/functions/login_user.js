@@ -1,5 +1,5 @@
-const { query } = require("faunadb");
-const { Query, Lambda, Create, Tokens, Select, Get, Var, Match, Index, Role } = query;
+const{ query } = require("faunadb");
+const{ Query, Lambda, Create, Tokens, Select, Get, Var, Match, Index } = query;
 
 module.exports = {
 	name: "login_user",
@@ -18,4 +18,4 @@ module.exports = {
 			)
 		)
 	)
-}
+};

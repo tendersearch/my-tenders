@@ -1,9 +1,9 @@
-const { query } = require("faunadb");
-const { Query, Lambda, Var, Exists, Index, Match } = query;
+const{ query } = require("faunadb");
+const{ Query, Lambda, Var, Exists, Index, Match } = query;
 
 module.exports = {
 	name: "user_exists",
-	body: 
+	body:
 	Query(
 		Lambda(
 			["userId"],
@@ -12,4 +12,4 @@ module.exports = {
 			)
 		)
 	)
-}
+};

@@ -1,5 +1,5 @@
-const { query } = require("faunadb");
-const { Collection, Function: Func } = query;
+const{ query } = require("faunadb");
+const{ Collection, Function: Func } = query;
 const userOwnerRead = require("../predicates/userOwnerRead");
 const userOwnerWrite = require("../predicates/userOwnerWrite");
 
@@ -37,6 +37,12 @@ module.exports = {
 			actions: {
 				call: true
 			}
+		},
+		{
+			resource: Func("search_tender"),
+			actions: {
+				call: true
+			}
 		}
 	],
 	membership: [
@@ -44,4 +50,4 @@ module.exports = {
 			resource: Collection("User")
 		}
 	]
-}
+};

@@ -1,34 +1,36 @@
-const { query } = require("faunadb");
-const { Query, Lambda, Filter, Paginate, Documents, Collection, Or, ContainsStrRegex, Get, Var, Map: FMap, Select, Concat, Role } = query;
+const{ query } = require("faunadb");
+const{ Query, Lambda, Filter, Paginate, Documents, Collection, Or, ContainsStrRegex, Get, Var, Map: FMap, Select, Concat, Role } = query;
 
 module.exports = {
 	name: "search_tender",
 	role: Role("User"),
-	body: 
+	body:
 	Query(
 		Lambda(
 			["query", "size", "after"],
-			FMap(
-				Filter(
-					Paginate(Documents(Collection("Tender")), { size: Var("size"), after: Var("after") }),
-					Lambda(
-						"item",
-						Or(
-							ContainsStrRegex(Select(["data", "name"], Get(Var("item"))), Concat([".*", Var("query"), ".*"])),
-							ContainsStrRegex(Select(["data", "description"], Get(Var("item"))), Concat([".*", Var("query"), ".*"])),
-							ContainsStrRegex(Select(["data", "state"], Get(Var("item"))), Concat([".*", Var("query"), ".*"])),
-							ContainsStrRegex(Select(["data", "city"], Get(Var("item"))), Concat([".*", Var("query"), ".*"]))
+			Select(["date"],
+				FMap(
+					Filter(
+						Paginate(Documents(Collection("Tender")), { size: Var("size"), after: Var("after") }),
+						Lambda(
+							"item",
+							Or(
+								ContainsStrRegex(Select(["data", "name"], Get(Var("item"))), Concat([".*", Var("query"), ".*"])),
+								ContainsStrRegex(Select(["data", "description"], Get(Var("item"))), Concat([".*", Var("query"), ".*"])),
+								ContainsStrRegex(Select(["data", "state"], Get(Var("item"))), Concat([".*", Var("query"), ".*"])),
+								ContainsStrRegex(Select(["data", "city"], Get(Var("item"))), Concat([".*", Var("query"), ".*"]))
+							)
 						)
+					),
+					Lambda(
+						["item"],
+						Select(["data"], Get(Var("item")))
 					)
-				),
-				Lambda(
-					["item"],
-					Select(["data"], Get(Var("item")))
 				)
 			)
 		)
 	)
-}
+};
 
 /*
 TODO:
