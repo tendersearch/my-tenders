@@ -1,5 +1,5 @@
 const { query } = require("faunadb");
-const { Collection } = query;
+const { Collection, Function: Func } = query;
 const userOwnerRead = require("../predicates/userOwnerRead");
 const userOwnerWrite = require("../predicates/userOwnerWrite");
 
@@ -30,6 +30,12 @@ module.exports = {
 				history_write: false,
 				unrestricted_read: false,
 				call: false
+			}
+		},
+		{
+			resource: Func("current_user"),
+			actions: {
+				call: true
 			}
 		}
 	],

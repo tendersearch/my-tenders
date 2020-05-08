@@ -38,9 +38,25 @@ input LoginUserInput{
 	userId: String!
 }
 
+input SearchTendersInput{
+	name: String
+	description: String
+	state: String
+	city: String
+}
+
 type Query{
 	userExists(userId: String!): Boolean! @resolver(name: "user_exists")
 	currentUser: User @resolver(name: "current_user")
+	tenderByName(name: String): [Tender]
+	tenderByDescription(description: String): [Tender]
+	tenderByState(state: String): [Tender]
+	tenderByCity(city: String): [Tender]
+	tenderByOpeningDate(openingDate: Time): [Tender]
+	tenderByEndDate(endDate: Time): [Tender]
+	tenderByEstAmount(estAmount: Int): [Tender]
+	tenderByEmd(emd: Int): [Tender]
+	searchTenders(query: String, size: Int, after: String): [Tender] @resolver(name: "search_tender")
 }
 
 type Mutation{

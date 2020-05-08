@@ -29,12 +29,6 @@ module.exports = {
 				unrestricted_read: false,
 				call: false
 			}
-		},
-		{
-			resource: Func("current_user"),
-			actions: {
-				call: true
-			}
 		}
 	]
 }
