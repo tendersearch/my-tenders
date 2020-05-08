@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import client from "../../util/client";
-import {ApolloProvider} from "@apollo/react-hooks";
-import React, { useEffect, useState } from "react";
+import { ApolloProvider } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 // Context
@@ -18,12 +18,12 @@ query{
 		userId
 	}
 }
-`
+`;
 
 async function getUser(){
 	try{
 		const currentUserResult = await client.query({ query: CURRENT_USER });
-		const { data, errors } = currentUserResult;
+		const{ data, errors } = currentUserResult;
 		const currentUser = data.currentUser;
 		currentUser.loggedIn = true;
 
@@ -31,12 +31,11 @@ async function getUser(){
 	}catch(err){
 		console.error(err);
 
-		return { loggedIn: false };
+		return{ loggedIn: false };
 	}
-	
 }
 
-export default function Layout({ title, description, children }) {
+export default function Layout({ title, description, children }){
 	const[user, setUser] = useState(null);
 	const themeColor = "#364aa2";
 
@@ -44,7 +43,7 @@ export default function Layout({ title, description, children }) {
 		const currentUser = await getUser();
 
 		setUser(currentUser);
-	}
+	};
 
 	useEffect( () => {
 		if(!user)
@@ -53,18 +52,18 @@ export default function Layout({ title, description, children }) {
 
 	const methods = {
 		fetchUser
-	}
+	};
 
-	return (
-		<ApolloProvider client={client}>
-			<MethodContext.Provider value={methods}>
-				<UserContext.Provider value={user}>
-					
+	return(
+		<MethodContext.Provider value={methods}>
+			<UserContext.Provider value={user}>
+				<ApolloProvider client={client}>
+
 					<Head>
 						<title>{title}</title>
 						<meta name="description" content={description} />
 						<link rel="icon" href="/favicon.ico" />
-						
+
 						<link rel="manifest" href="/manifest.json" />
 						<link href='/favicon-16x16.png' rel='icon' type='image/png' sizes='16x16' />
 						<link href='/favicon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
@@ -74,10 +73,8 @@ export default function Layout({ title, description, children }) {
 					<Header />
 					<main>{children}</main>
 					<Footer />
-				
-				</UserContext.Provider>
-			</MethodContext.Provider>
-		</ApolloProvider>
-		
-	)
+				</ApolloProvider>
+			</UserContext.Provider>
+		</MethodContext.Provider>
+	);
 }

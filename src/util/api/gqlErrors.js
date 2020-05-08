@@ -6,9 +6,9 @@ const response = require("./response").default;
  * @param {String} subject - The subject of the error. e.g User, Tender
  * @param {Response} res - A response object
  */
-function gqlErrors (errors, subject, res){
-	if(errorIsPresent("instance not unique", errors)) 
-		return response(409, { message: `${subject} already exists`}, res);
+function gqlErrors(errors, subject, res){
+	if(errorIsPresent("instance not unique", errors))
+		return response(409, { message: `${subject} already exists` }, res);
 
 	if(errorIsPresent("transaction aborted", errors))
 		return response(500, { message: "Service Error" }, res);
@@ -25,7 +25,7 @@ function gqlErrors (errors, subject, res){
  * @param {Array} errorsArray - An array of errors returned from FaunaDB GraphQL.
  */
 function errorIsPresent(error, errorsArray){
-	return [...errorsArray].some( item => item.extensions.code === error);
+	return[...errorsArray].some( item => item.extensions.code === error);
 }
 
 module.exports = gqlErrors;

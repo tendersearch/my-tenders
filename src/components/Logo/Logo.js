@@ -1,4 +1,4 @@
-import LogoIcon from "../../images/logo/logo.svg"
+import LogoIcon from "../../images/logo/logo.svg";
 
 import styles from "./logo.module.css";
 
@@ -8,5 +8,5 @@ export default function Logo(){
 			<LogoIcon alt="MyTenders" className={styles.logo} />
 			<span className={styles.wordmark}>MyTenders</span>
 		</div>
-	)
+	);
 }

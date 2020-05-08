@@ -12,8 +12,8 @@ const client = new ApolloClient({
 				"Authorization": `Bearer ${Cookie.get("secret") ? Cookie.get("secret") : GUEST_KEY}`,
 				"X-Schema-Preview": "partial-update-mutation"
 			}
-		})
+		});
 	}
-})
+});
 
 export default client;

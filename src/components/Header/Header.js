@@ -24,28 +24,28 @@ import styles from "./header.module.css";
 export default function Header(){
 	const router = useRouter();
 	const user = useContext(UserContext);
-	const { fetchUser } = useContext(MethodContext);
-	const [loggingIn, setLoggingIn] = useState(false);
+	const{ fetchUser } = useContext(MethodContext);
+	const[loggingIn, setLoggingIn] = useState(false);
 
 	const onRequest = () => {
 		setLoggingIn(true);
-	}
+	};
 
 	const onCompleted = () => {
 		setLoggingIn(false);
-	}
+	};
 
 	const onSuccess = async data => {
 		await loginUser(data);
-		
+
 		router.reload();
-	}
+	};
 
 	return(
 		<header className={styles.header}>
 			<nav>
-				<div 
-				className={classNames(styles.saved, styles.link, (!user || !user.loggedIn ? styles.disabled : ""))}>
+				<div
+					className={classNames(styles.saved, styles.link, (!user || !user.loggedIn ? styles.disabled : ""))}>
 					<Link href="/saved">
 						<a>
 							<SavedIcon />
@@ -53,7 +53,7 @@ export default function Header(){
 						</a>
 					</Link>
 				</div>
-				
+
 				<Link href="/">
 					<a className={styles.home}>
 						<Logo />
@@ -76,26 +76,26 @@ export default function Header(){
 							<div className={styles.googleLogin}>
 								{
 									!loggingIn ? (
-										<GoogleLogin 
-										clientId={process.env.GOOGLE_CLIENT_ID}
-										buttonText="Login with Google"
-										scope="email profile"
-										onSuccess={onSuccess}
-										onRequest={onRequest}
-										onCompleted={onCompleted}
-									/>
+										<GoogleLogin
+											clientId={process.env.GOOGLE_CLIENT_ID}
+											buttonText="Login with Google"
+											scope="email profile"
+											onSuccess={onSuccess}
+											onRequest={onRequest}
+											onCompleted={onCompleted}
+										/>
 									)
-									: (
-										<Loader active={loggingIn} />
-									)
+										: (
+											<Loader active={loggingIn} />
+										)
 								}
-								
+
 							</div>
-							
+
 						)
 				}
-				
-			</nav>	
+
+			</nav>
 		</header>
-	)
+	);
 }

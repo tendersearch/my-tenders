@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 // Styles
-import styles from "./footer.module.css"
+import styles from "./footer.module.css";
 
 // Icons
 import SvgProfile from "../../images/icons/profile.svg";
@@ -34,7 +34,7 @@ function Footer(){
 				</Link>
 			</nav>
 		</footer>
-	)
+	);
 }
 
 export default Footer;

@@ -16,15 +16,15 @@ module.exports = withImages(withPWA({
 		path.resolve(__dirname, "src/images/logo")
 	],
 	target: "serverless",
-	webpack(config) {
+	webpack(config){
 		config.module.rules.push({
-		  test: /\.svg$/,
-		  issuer: {
-			test: /\.(js|ts)x?$/,
-		  },
-		  use: ['@svgr/webpack'],
+			test: /\.svg$/,
+			issuer: {
+				test: /\.(js|ts)x?$/
+			},
+			use: ["@svgr/webpack"]
 		});
-	
+
 		return config;
-	  }
-}))
+	}
+}));

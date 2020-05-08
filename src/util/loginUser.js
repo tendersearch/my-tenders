@@ -1,7 +1,7 @@
 import Cookie from "js-cookie";
 
 export default async function loginUser(data){
-	const { accessToken, tokenId } = data;
+	const{ accessToken, tokenId } = data;
 
 	const response = await fetch("/api/login", {
 		method: "POST",
