@@ -17,6 +17,7 @@ export default async function loginUser(data){
 	const result = await response.json();
 
 	if(result.secret) Cookie.set("secret", result.secret);
+	else throw new Error("Could not login");
 
 	return result;
 }
