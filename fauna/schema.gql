@@ -56,7 +56,6 @@ type Query{
 	tenderByEndDate(endDate: Time): [Tender]
 	tenderByEstAmount(estAmount: Int): [Tender]
 	tenderByEmd(emd: Int): [Tender]
-	searchTenders(query: String, size: Int, after: Int): [Tender]! @resolver(name: "search_tender")
 }
 
 type Mutation{
