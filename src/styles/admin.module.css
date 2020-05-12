@@ -14,3 +14,24 @@
 .container h2{
 	font-size: 1.3rem;
 }
+
+/* Logged out view */
+.becomeAdmin{
+	margin-top: 3rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.becomeAdmin .error{
+	color: var(--red);
+	width: 100%;
+	margin-top: 20px;
+}
+.disclaimer{
+	font-size: .9rem;
+}
+
+/* Logged in view */
+.loggedIn{
+	padding-bottom: 400px;
+}

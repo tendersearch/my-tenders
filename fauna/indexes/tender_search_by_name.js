@@ -1,5 +1,5 @@
-const { query } = require("faunadb");
-const { Collection, Query, Lambda, LowerCase, Select, Var } = query;
+const{ query } = require("faunadb");
+const{ Collection, Query, Lambda, LowerCase, Select, Var } = query;
 
 module.exports = {
 	name: "tender_search_by_name",
@@ -22,4 +22,4 @@ module.exports = {
 		{ field: ["data", "name"] },
 		{ field: ["ref"] }
 	]
-}
+};

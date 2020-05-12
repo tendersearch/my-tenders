@@ -1,21 +1,25 @@
 const{ query } = require("faunadb");
-const{ Query, Lambda, Create, Collection, Select, Var } = query;
+const{ Query, Lambda, Update, If, Equals, Count, Match, Index, Identity, Select, Get, Do } = query;
 
 module.exports = {
 	name: "create_admin_user",
-	role: "admin",
+	role: null,
 	body:
 	Query(
 		Lambda(
-			["input"],
-			Create(Collection("User"), {
-				data: {
-					name: Select("name", Var("input")),
-					email: Select("email", Var("input")),
-					userId: Select("userId", Var("input")),
-					role: "ADMIN"
-				}
-			})
+			[],
+			If(
+				Equals(Count(Match(Index("userByRole"), "ADMIN")), 0),
+				Do(
+					Update(Identity(),
+						{
+							data: { role: "ADMIN" }
+						}
+					),
+					Equals(Select(["data", "role"], Get(Identity())), "ADMIN")
+				),
+				false
+			)
 		)
 	)
 };

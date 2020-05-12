@@ -1,50 +1,54 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "../components/Layout/Layout";
 import Result from "../components/Result/Result";
-import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-
 import styles from "../styles/search.module.css";
+import algoliasearch from "algoliasearch/lite";
 
-const SEARCH_TENDER = gql`
-query($query: String, $size: Int, $after: String){
-	searchTenders( query: $query, size: $size, after: $after){
-		name
-		description
-		state
-		city
-		endDate
-		openingDate
-		emd
-		url
-		estAmount
-	}
-}
-`;
+const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_SEARCH_KEY);
+const index = client.initIndex("tender");
 
 export default function Search(){
 	const{ query: { q } } = useRouter();
-	const{ loading, error, data } = useQuery(SEARCH_TENDER, {
-		variables: {
-			query: q,
-			size: 50,
-			after: "0"
-		}
-	});
+	const[query] = useState(q);
+	const[results, setResults] = useState([]);
 
-	console.log(data);
+	useEffect( () => {
+		const doSearch = async () => {
+			const search = await index.search(query, {
+				filters: `end_timestamp > ${Date.now()}`
+			});
+
+			setResults(search.hits);
+		};
+
+		doSearch();
+	}, [query]);
 
 	return(
 		<Layout
 			title={`Tender search: ${q}`}
 		>
 			<div className={styles.results}>
-				<Result />
-				<Result />
-				<Result />
-				<Result />
-				<Result />
-				<Result />
+				{results.map( result => (
+					<Result
+						key={result.objectID}
+						name={result.name}
+						description={result.description}
+						city={result.city}
+						state={result.state}
+						emd={result.emd}
+						estAmount={result.estAmount}
+						endDate={result.endDate}
+						openingDate={result.openingDate}
+					/>
+				))}
+
+				{
+					results.length === 0
+						? <span className={styles.empty}>No active tenders where found with that query.</span>
+						: ""
+				}
 			</div>
 		</Layout>
 	);

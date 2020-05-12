@@ -26,6 +26,11 @@ type Tender{
 	url: String!
 
 	savedBy: [User]
+	createdTender: CreatedTender
+}
+
+type CreatedTender{
+	data: [Tender]!
 }
 
 input CreateUserInput{
@@ -45,8 +50,21 @@ input SearchTendersInput{
 	city: String
 }
 
+input CreateTenderInput{
+	name: String!
+	state: String!
+	city: String!
+	description: String!
+	endDate: Time!
+	openingDate: Time!
+	estAmount: Int!
+	emd: Int!
+	url: String!
+}
+
 type Query{
 	userExists(userId: String!): Boolean! @resolver(name: "user_exists")
+	userByRole(role: Role!): User
 	currentUser: User @resolver(name: "current_user")
 	tenderByName(name: String): [Tender]
 	tenderByDescription(description: String): [Tender]
@@ -61,4 +79,6 @@ type Query{
 type Mutation{
 	createUser(input: CreateUserInput): User @resolver(name: "create_user")
 	loginUser(input: LoginUserInput): String @resolver(name: "login_user")
+	createTenders(input: [CreateTenderInput]): [CreatedTender] @resolver(name: "create_tenders")
+	createAdminUser: Boolean! @resolver(name: "create_admin_user")
 }
