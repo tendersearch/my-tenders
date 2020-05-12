@@ -1,0 +1,16 @@
+.search{
+	padding: 0 2rem;
+	font-size: 1.2rem;
+}
+.algolia{
+	margin-top: 5px;
+	font-size: .8rem;
+	font-weight: 200;
+	display: flex;
+	align-items: center;
+}
+.icon{
+	margin-left: 5px;
+	height: 16px;
+	width: 16px;
+}

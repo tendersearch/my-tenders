@@ -5,7 +5,7 @@
 	display: flex;
 	flex-direction: column;
 
-	margin: auto;
+	margin: 2rem auto;
 }
 .container{
 	width: 85%;
@@ -38,21 +38,18 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 2rem;
-	margin: 3rem 0;
+	margin: 1rem 0;
 }
 .divider .line{
 	width: 40%;
 	height: 1px;
 	background: var(--grey);
 }
-.search{
-	padding: 0 2rem 8rem;
-	font-size: 1.2rem;
-}
 
 @media only screen and (min-width: 800px){
 	.contentWrapper{
 		flex-direction: column-reverse;
+		margin: 0 auto;
 	}
 	.container{
 		margin: 0 auto;
@@ -61,5 +58,8 @@
 	.search{
 		margin-top: 2rem;
 		padding: 0;
+	}
+	.divider{
+		margin: 3rem 0;
 	}
 }
