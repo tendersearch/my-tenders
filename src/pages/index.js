@@ -1,5 +1,5 @@
 import Layout from "../components/Layout/Layout";
-import { Dropdown, Button, Input, Icon } from "semantic-ui-react";
+import { Dropdown, Button } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
 import styles from "../styles/index.module.css";
