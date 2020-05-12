@@ -4,6 +4,7 @@
 		"react/react-in-jsx-scope": "off"
 	},
 	"globals": {
-		"React": "writable"
+		"React": "writable",
+		"gapi": "readonly"
 	}
 }

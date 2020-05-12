@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import classNames from "classnames";
 
 // Components
 import Logo from "../Logo/Logo";
 import { GoogleLogin } from "react-google-login";
-import { Loader } from "semantic-ui-react";
+import { Loader, Button, Icon } from "semantic-ui-react";
 
 // Contexts
 import UserContext from "../../contexts/userContext";
@@ -23,17 +23,22 @@ export default function Header(){
 	const user = useContext(UserContext);
 	const[loggingIn, setLoggingIn] = useState(false);
 
-	const onRequest = () => {
-		setLoggingIn(true);
-	};
+	useEffect( () => {
+		const loadSignIn = () => {
+			if(auth.google)
+				gapi.load("signin2", () => {
+					gapi.signin2.render("googleLoginButton", {
+						onsuccess: auth.signIn.bind(auth)
+					});
+				});
+		};
 
-	const onCompleted = () => {
-		setLoggingIn(false);
-	};
+		if(auth.google)
+			loadSignIn();
 
-	const onSuccess = async data => {
-		auth.login(data);
-	};
+		if(!auth.google)
+			setTimeout(loadSignIn, 1000);
+	});
 
 	return(
 		<header className={styles.header}>
@@ -73,9 +78,7 @@ export default function Header(){
 							: (
 								<LoginWithGoogle
 									loggingIn={loggingIn}
-									onSuccess={onSuccess}
-									onRequest={onRequest}
-									onCompleted={onCompleted}
+									onClick={auth.signIn}
 								/>
 							)
 					}
@@ -89,17 +92,7 @@ export default function Header(){
 function LoginWithGoogle({ loggingIn, onSuccess, onRequest, onCompleted }){
 	if(!loggingIn)
 		return(
-			<div className={styles.googleLogin}>
-				<GoogleLogin
-					clientId={process.env.GOOGLE_CLIENT_ID}
-					buttonText="Login with Google"
-					scope="email profile"
-					onSuccess={onSuccess}
-					onRequest={onRequest}
-					onCompleted={onCompleted}
-				/>
-			</div>
-
+			<div className={styles.googleLogin} id="googleLoginButton"></div>
 		);
 
 	if(loggingIn)

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Input, Label } from "semantic-ui-react";
+import { Button, Form, Input, Label, Header } from "semantic-ui-react";
 import Datetime from "react-datetime";
 import { useForm } from "react-hook-form";
 import auth from "../../util/Auth";
@@ -28,6 +28,8 @@ const AddTendersForm = () => {
 
 	return(
 		<Form action="/api/tender/add" onSubmit={handleSubmit(onSubmit)}>
+			<Header as="h3">Create single tender</Header>
+
 			{/* Organisation name */}
 			<Form.Field>
 				<label>Organisation Name</label>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -14,9 +14,8 @@ export default function Layout({ title, description, children }){
 	const[user, setUser] = useState(auth.user);
 	const themeColor = "#364aa2";
 
-	auth.on("user_change", (user) => {
-		console.log("Updated user", user);
-		setUser(user);
+	useEffect( () => {
+		auth.on("user_change", setUser);
 	});
 
 	return(
@@ -32,6 +31,8 @@ export default function Layout({ title, description, children }){
 					<link href='/favicon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
 					<link rel="apple-touch-icon" href="/apple-icon.png"></link>
 					<meta name="theme-color" content={themeColor}/>
+
+					<script src="https://apis.google.com/js/api.js" async defer></script>
 				</Head>
 				<Header />
 				<main>{children}</main>

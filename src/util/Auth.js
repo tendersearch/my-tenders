@@ -21,6 +21,28 @@ mutation{
 `;
 
 class Auth extends EventEmitter{
+	constructor(){
+		super();
+
+		this.google = null;
+		this.onReady = () => { console.log("Auth client ready"); };
+		this.adminScopes = "https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/drive.readonly";
+
+		this.init();
+	}
+
+	init(){
+		if(typeof window !== "undefined")
+			gapi.load("auth2", async () => {
+				this.google = await gapi.auth2.init({
+					client_id: process.env.GOOGLE_CLIENT_ID
+				});
+
+				this.googleUser = this.google.currentUser.get();
+				this.onReady();
+			});
+	}
+
 	set user(user){
 		if(typeof window === "undefined") return;
 
@@ -42,6 +64,23 @@ class Auth extends EventEmitter{
 		}
 	}
 
+	set googleUser(user){
+		if(typeof window === "undefined") return;
+
+		localStorage.setItem("googleUser", JSON.stringify(user));
+	}
+
+	get googleUser(){
+		if(typeof window === "undefined") return{};
+
+		const stored = localStorage.getItem("googleUser");
+
+		if(stored)
+			return JSON.parse(stored);
+		else
+			return{};
+	}
+
 	async getUser(){
 		const currentUserResult = await client.query({ query: CURRENT_USER });
 		const{ data } = currentUserResult;
@@ -52,6 +91,11 @@ class Auth extends EventEmitter{
 		console.log(currentUser);
 		this.user = currentUser || { loggedIn: false };
 		return currentUser;
+	}
+
+	async signIn(data){
+		const{ access_token: accessToken, id_token: tokenId } = data.tc;
+		this.login({ accessToken, tokenId });
 	}
 
 	async login(data){
@@ -78,7 +122,7 @@ class Auth extends EventEmitter{
 
 	async becomeAdmin(){
 		const createAdminUserResult = await client.mutate({ mutation: CREATE_ADMIN_USER });
-		const{ data, errors } = createAdminUserResult;
+		const{ data } = createAdminUserResult;
 		const status = data.createAdminUser;
 
 		return status;

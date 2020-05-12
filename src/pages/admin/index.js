@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import auth from "../../util/Auth";
 
 // Components
 import Layout from "../../components/Layout/Layout";
 import UserContext from "../../contexts/userContext";
-import { Button } from "semantic-ui-react";
+import { Button, Icon, Divider } from "semantic-ui-react";
 import AddTendersForm from "../../components/AddTendersForm/AddTendersForm";
+import AddTendersFromSpreadsheet from "../../components/AddTendersFromSpreadsheet/AddTendersFromSpreadsheet";
 
 // Styles
 import styles from "../../styles/admin.module.css";
@@ -23,12 +24,22 @@ export default function admin(){
 }
 
 const Display = () => {
+	const[hasScopes, setHasScopes] = useState(
+		auth.google
+			? auth.google.currentUser.get().hasGrantedScopes(auth.adminScopes)
+			: false);
 	const user = useContext(UserContext);
+
+	useEffect( () => {
+		auth.onReady = () => {
+			setHasScopes(auth.google.currentUser.get().hasGrantedScopes(auth.adminScopes));
+		};
+	});
 
 	return(
 		<>
 			{
-				!user.loggedIn || user.role !== "ADMIN"
+				!user.loggedIn || user.role !== "ADMIN" || !hasScopes
 					? <NotAdmin user={user} />
 					: <Admin />
 			}
@@ -44,6 +55,9 @@ const NotAdmin = ({ user }) => {
 		setLoading(true);
 		const status = await auth.becomeAdmin();
 		if(status){
+			auth.google.currentUser.get().grant({
+				scope: auth.adminScopes
+			});
 			setLoading(false);
 			await auth.getUser();
 			return;
@@ -61,8 +75,15 @@ const NotAdmin = ({ user }) => {
 				isLoggedIn
 					? (
 						<div className={styles.becomeAdmin}>
-							<Button loading={loading} primary onClick={onBecomeAdmin}>Become admin</Button>
-							<span className={styles.disclaimer}>There can only be one admin</span>
+							<Button
+								onClick={onBecomeAdmin}
+								primary
+								loading={loading}
+							>
+								<Icon name="key" />
+								Become Admin
+							</Button>
+							<span className={styles.disclaimer}>There can only be one admin. The admin user needs additional permissions to read from the Google Sheets API.</span>
 							<p className={styles.error}>{error}</p>
 						</div>
 					)
@@ -79,6 +100,8 @@ const Admin = () => {
 			<h1>Admin panel</h1>
 			<section className={styles.loggedIn}>
 				<h2>Add Tenders</h2>
+				<AddTendersFromSpreadsheet className={styles.tendersFromSheet} />
+				<Divider horizontal style={{ margin: "50px 0" }}>OR</Divider>
 				<AddTendersForm />
 			</section>
 
