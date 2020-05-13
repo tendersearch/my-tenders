@@ -104,7 +104,7 @@ async function fetchSpreadsheet(user, id){
 
 function parseSpreadsheet(rows){
 	const keys = rows[0].map( value => {
-		switch(value){
+		switch(value.trim()){
 		case "Organisation Name":
 			return"name";
 		case "Department":
