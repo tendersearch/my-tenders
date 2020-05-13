@@ -16,6 +16,7 @@ enum Role{
 
 type Tender{
 	name: String!
+	department: String!
 	state: String!
 	city: String!
 	description: String!
@@ -52,6 +53,7 @@ input SearchTendersInput{
 
 input CreateTenderInput{
 	name: String!
+	department: String!
 	state: String!
 	city: String!
 	description: String!
