@@ -25,6 +25,7 @@ export default function AddTendersFromSpreadsheet({ className }){
 
 	const onSubmit = async () => {
 		const sheetData = await fetchSpreadsheet(user, sheetId);
+		console.log(sheetData);
 		const response = await fetch("/api/tender/add", {
 			method: "POST",
 			headers: {
@@ -90,7 +91,7 @@ async function listSpreadsheets(user){
 }
 
 async function fetchSpreadsheet(user, id){
-	const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/A1:I10000`, {
+	const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/A1:J10000`, {
 		headers: {
 			"Authorization": `Bearer ${user.tc.access_token}`
 		},
