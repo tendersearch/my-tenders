@@ -140,7 +140,11 @@ function RemoveTender({ onClick }){
 	);
 }
 
-function parseDate(dateStr){
+function parseDate(date){
+	let dateStr = date;
+
+	if(typeof date === "object") dateStr = date["@ts"];
+
 	return moment(dateStr).format("DD-MMM-YYYY hh:mm A");
 }
 
@@ -153,8 +157,8 @@ Result.propTypes = {
 	city: PropTypes.string,
 	state: PropTypes.string,
 	description: PropTypes.string,
-	endDate: PropTypes.string,
-	openingDate: PropTypes.string,
+	endDate: PropTypes.any,
+	openingDate: PropTypes.any,
 	estAmount: PropTypes.number,
 	emd: PropTypes.number,
 	id: PropTypes.string,
