@@ -14,7 +14,7 @@ const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_SEA
 const index = client.initIndex("tender");
 
 export default function Search(){
-	const{ query: { q }, push } = useRouter();
+	const{ query: { q = "", dep = "", org = "", city = "", state = "" }, push } = useRouter();
 	const[query, setQuery] = useState(q);
 	const[results, setResults] = useState([]);
 	const[loading, setLoading] = useState(true);
@@ -23,9 +23,10 @@ export default function Search(){
 		const doSearch = async () => {
 			setLoading(true);
 			const search = await index.search(query, {
-				filters: `end_timestamp > ${Date.now()}`
+				filters: buildFilter({ department: dep, name: org, city, state })
 			});
 
+			console.log(search);
 			setResults(search.hits);
 			setLoading(false);
 		};
@@ -81,6 +82,21 @@ function Results({ results }){
 			}
 		</div>
 	);
+}
+
+function buildFilter(obj){
+	let filter = `end_timestamp > ${Date.now()}`;
+	const keys = Object.keys(obj).filter( key => obj[key]);
+
+	const addFilter = keys.map( (cur, idx) => {
+		return`${cur}:'${obj[cur]}'`;
+	}).join(" OR ");
+
+	if(keys.length > 0) filter += ` AND (${addFilter})`;
+
+	console.log(filter);
+
+	return filter;
 }
 
 Results.propTypes = {
