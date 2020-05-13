@@ -55,7 +55,7 @@ const NotAdmin = ({ user }) => {
 		setLoading(true);
 		const status = await auth.becomeAdmin();
 		if(status){
-			auth.google.currentUser.get().grant({
+			await auth.google.currentUser.get().grant({
 				scope: auth.adminScopes
 			});
 			setLoading(false);
