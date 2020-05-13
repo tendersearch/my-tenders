@@ -41,11 +41,10 @@ export default function Result({ name, city, state, description, endDate, openin
 	const isSaved = savedTenders.includes(id);
 
 	console.log(savedTenders);
+	console.log("Tender", id);
+	console.log("User", user._id);
 
 	const onSaveTender = async () => {
-		console.log("Tender", id);
-		console.log("User", user._id);
-
 		const status = await saveTender({ variables: { tenderId: id, userId: user._id } });
 		const partialUpdateUser = status.data.partialUpdateUser;
 		const newSavedTenders = partialUpdateUser.savedTenders;
