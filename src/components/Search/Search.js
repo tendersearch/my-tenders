@@ -7,7 +7,7 @@ import AlgoliaImage from "../../images/algolia.png";
 // Styles
 import styles from "./search.module.css";
 
-export default function SearchInput({ onSubmit }){
+export default function SearchInput({ onSubmit, onChange }){
 	const handleSubmit = (e) => {
 		const value = e.target.value;
 
@@ -15,9 +15,17 @@ export default function SearchInput({ onSubmit }){
 			onSubmit(value);
 	};
 
+	const handleChange = e => {
+		if(!onChange) return;
+
+		const value = e.target.value;
+
+		onChange(value);
+	};
+
 	return(
 		<div className={styles.search}>
-			<Input fluid icon placeholder="search..." onKeyUp={handleSubmit}>
+			<Input fluid icon placeholder="search..." onKeyUp={handleSubmit} onChange={handleChange}>
 				<input />
 				<Icon name="search" />
 			</Input>
@@ -30,5 +38,6 @@ export default function SearchInput({ onSubmit }){
 }
 
 SearchInput.propTypes = {
-	onSubmit: PropTypes.func
+	onSubmit: PropTypes.func,
+	onChange: PropTypes.func
 };
