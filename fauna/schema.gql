@@ -6,7 +6,7 @@ type User{
 	userId: String! @unique
 	role: Role!
 
-	savedTenders: [Tender]
+	savedTenders: [Tender] @relation
 }
 
 enum Role{
