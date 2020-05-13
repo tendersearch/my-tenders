@@ -43,12 +43,15 @@ export default function Search(){
 		<Layout
 			title={`Tender search: ${q}`}
 		>
-			<SearchInput onSubmit={onSearch} />
-			{
-				loading
-					? <Loader active />
-					: <Results results={results} />
-			}
+			<div className={styles.container}>
+				<SearchInput onSubmit={onSearch} />
+				{
+					loading
+						? <Loader active />
+						: <Results results={results} />
+				}
+			</div>
+
 		</Layout>
 	);
 }
@@ -67,6 +70,7 @@ function Results({ results }){
 					estAmount={result.estAmount}
 					endDate={result.endDate}
 					openingDate={result.openingDate}
+					id={result.objectID}
 				/>
 			))}
 
