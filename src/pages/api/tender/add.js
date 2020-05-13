@@ -32,12 +32,17 @@ module.exports = async (req, res) => {
 	const body = parseBody(req.body);
 	const result = await createTenders(body, db);
 
-	const tenders = result.map( item => ({
-		...item.data,
-		objectID: item.id,
-		opening_timestamp: new Date(item.data.openingDate).getTime(),
-		end_timestamp: new Date(item.data.endDate).getTime()
-	}));
+	const tenders = result.map( item => {
+		const openingDate = item.data.openingDate.toString().replace(/(Time|\(|\)|")/g, "");
+		const endDate = item.data.endDate.toString().replace(/(Time|\(|\)|")/g, "");
+
+		return{
+			...item.data,
+			objectID: item.id,
+			opening_timestamp: new Date(openingDate).getTime(),
+			end_timestamp: new Date(endDate).getTime()
+		};
+	});
 	await saveToAlgolia(tenders);
 
 	response(200, { message: "Tenders saved!" }, res);
@@ -55,8 +60,6 @@ const createTenders = async (data) => {
 		secret: process.env.FAUNADB_SERVER_KEY
 	});
 	const q = faunadb.query;
-
-	console.log(data);
 
 	// Use FQL because the graphql api wouldn't let me create multiple entries at once.
 	const result = await client.query(
@@ -116,6 +119,12 @@ const saveToAlgolia = async (objects) => {
 				"description",
 				"city",
 				"state"
+			],
+			attributesForFaceting: [
+				"name",
+				"city",
+				"state",
+				"department"
 			]
 		});
 
