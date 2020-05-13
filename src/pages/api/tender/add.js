@@ -56,10 +56,31 @@ const createTenders = async (data) => {
 	});
 	const q = faunadb.query;
 
+	console.log(data);
+
 	// Use FQL because the graphql api wouldn't let me create multiple entries at once.
 	const result = await client.query(
 		q.Map(
-			q.Call(q.Function("create_tenders"), data),
+			q.Call(q.Function("create_tenders"),
+				q.Map(
+					data,
+					q.Lambda(
+						"item",
+						{
+							name: q.Select(["name"], q.Var("item")),
+							department: q.Select(["department"], q.Var("item")),
+							state: q.Select(["state"], q.Var("item")),
+							city: q.Select(["city"], q.Var("item")),
+							description: q.Select(["description"], q.Var("item")),
+							estAmount: q.Select(["estAmount"], q.Var("item")),
+							emd: q.Select(["emd"], q.Var("item")),
+							url: q.Select(["url"], q.Var("item")),
+							endDate: q.ToTime(q.Select(["endDate"], q.Var("item"))),
+							openingDate: q.ToTime(q.Select(["openingDate"], q.Var("item")))
+						}
+					)
+				)
+			),
 			q.Lambda(
 				"item",
 				{
