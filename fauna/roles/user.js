@@ -37,7 +37,8 @@ module.exports = {
 			actions: {
 				read: true,
 				write: true,
-				create: true
+				create: true,
+				delete: true
 			}
 		},
 		{
