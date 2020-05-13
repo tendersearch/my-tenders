@@ -33,6 +33,14 @@ module.exports = {
 			}
 		},
 		{
+			resource: Collection("tender_savedBy"),
+			actions: {
+				read: true,
+				write: true,
+				create: true
+			}
+		},
+		{
 			resource: Func("current_user"),
 			actions: {
 				call: true
@@ -54,6 +62,24 @@ module.exports = {
 			resource: Index("userByRole"),
 			actions: {
 				unrestricted_read: false,
+				read: true
+			}
+		},
+		{
+			resource: Index("tender_savedBy_by_tender"),
+			actions: {
+				read: true
+			}
+		},
+		{
+			resource: Index("tender_savedBy_by_user"),
+			actions: {
+				read: true
+			}
+		},
+		{
+			resource: Index("tender_savedBy_by_tender_and_user"),
+			actions: {
 				read: true
 			}
 		}
