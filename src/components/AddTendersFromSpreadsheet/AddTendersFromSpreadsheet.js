@@ -107,6 +107,8 @@ function parseSpreadsheet(rows){
 		switch(value){
 		case "Organisation Name":
 			return"name";
+		case "Department":
+			return"department";
 		case "Name of Work":
 			return"description";
 		case "State":

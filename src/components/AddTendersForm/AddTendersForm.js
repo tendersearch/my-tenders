@@ -31,18 +31,32 @@ const AddTendersForm = () => {
 			<Header as="h3">Create single tender</Header>
 
 			{/* Organisation name */}
-			<Form.Field>
-				<label>Organisation Name</label>
-				<input
-					type="text"
-					placeholder="eg. Air India"
-					name="name"
-					ref={register({
-						required: "Type the organisation name"
-					})}
-				/>
-				<InputError name="name" errors={errors} />
-			</Form.Field>
+			<Form.Group widths="equal">
+				<Form.Field>
+					<label>Organisation Name</label>
+					<input
+						type="text"
+						placeholder="eg. Air India"
+						name="name"
+						ref={register({
+							required: "Type the organisation name"
+						})}
+					/>
+					<InputError name="name" errors={errors} />
+				</Form.Field>
+
+				<Form.Field>
+					<label>Department</label>
+					<input
+						type="text"
+						placeholder="eg. Electrical"
+						name="department"
+						ref={register({
+							required: "Type the department"
+						})}
+					/>
+				</Form.Field>
+			</Form.Group>
 
 			{/* Url */}
 			<Form.Field>
