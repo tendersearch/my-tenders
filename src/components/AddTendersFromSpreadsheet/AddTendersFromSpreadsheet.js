@@ -109,13 +109,13 @@ function parseSpreadsheet(rows){
 			return"name";
 		case "Department":
 			return"department";
-		case "Name of Work":
+		case "Work Description":
 			return"description";
 		case "State":
 			return"state";
 		case "City":
 			return"city";
-		case "Tender Fees":
+		case "Tender Fee":
 			return"estAmount";
 		case "EMD":
 			return"emd";
