@@ -10,6 +10,12 @@ query{
 		email
 		userId
 		role
+		_id
+		savedTenders{
+			data{
+				_id
+			}
+		}
 	}
 }
 `;
@@ -31,13 +37,14 @@ class Auth extends EventEmitter{
 		this.init();
 	}
 
-	init(){
+	async init(){
 		if(typeof window !== "undefined")
 			gapi.load("auth2", async () => {
 				this.google = await gapi.auth2.init({
 					client_id: process.env.GOOGLE_CLIENT_ID
 				});
 
+				await this.getUser();
 				this.googleUser = this.google.currentUser.get();
 				this.onReady();
 			});
@@ -88,7 +95,6 @@ class Auth extends EventEmitter{
 		currentUser.loggedIn = true;
 		currentUser.secret = Cookie.get("secret");
 
-		console.log(currentUser);
 		this.user = currentUser || { loggedIn: false };
 		return currentUser;
 	}
