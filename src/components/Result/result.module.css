@@ -28,6 +28,20 @@
 .isSaved{
 	opacity: .5;
 }
+.close{
+	appearance: none;
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 0;
+	font-size: .9rem;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	color: var(--red);
+}
 
 .nameAndLocation{
 	display: flex;

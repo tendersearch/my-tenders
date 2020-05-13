@@ -78,6 +78,7 @@ function SavedTenders(){
 							{...tender}
 							key={tender._id}
 							id={tender._id}
+							fromSaved={true}
 						/>
 					))
 				}

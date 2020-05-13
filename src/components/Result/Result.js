@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import auth from "../../util/Auth";
+import { Icon } from "semantic-ui-react";
 
 // Context
 import UserContext from "../../contexts/userContext";
@@ -34,21 +35,54 @@ mutation($tenderId: [ID], $userId: ID!){
 }
 `;
 
-export default function Result({ name, city, state, description, endDate, openingDate, estAmount, emd, id }){
+const REMOVE_TENDER = gql`
+mutation($tenderId: [ID], $userId: ID!){
+	partialUpdateUser(
+		id: $userId,
+		data: {
+			savedTenders: { disconnect: $tenderId }
+		}
+	){
+		_id
+		savedTenders{
+			data{
+				_id
+			}
+		}
+	}
+}
+`;
+
+export default function Result({ name, city, state, description,
+	endDate, openingDate, estAmount, emd, id, fromSaved = false }){
 	const user = useContext(UserContext);
 	const[saveTender] = useMutation(SAVE_TENDER);
-	const savedTenders = user.savedTenders.data ? user.savedTenders.data.map( item => item._id) : [];
-	const isSaved = savedTenders.includes(id);
+	const[removeTender] = useMutation(REMOVE_TENDER);
 
-	console.log(savedTenders);
-	console.log("Tender", id);
-	console.log("User", user._id);
+	const savedTenders = user.savedTenders.data ? user.savedTenders.data.map( item => item._id) : [];
+	const[isSaved, setIsSaved] = useState(savedTenders.includes(id));
 
 	const onSaveTender = async () => {
+		if(isSaved) return;
+
+		setIsSaved(true);
+
 		const status = await saveTender({ variables: { tenderId: id, userId: user._id } });
+		handleStatus(status);
+	};
+
+	const onRemoveTender = async () => {
+		const status = await removeTender({ variables: { tenderId: id, userId: user._id } });
+		handleStatus(status);
+	};
+
+	const handleStatus = (status) => {
 		const partialUpdateUser = status.data.partialUpdateUser;
 		const newSavedTenders = partialUpdateUser.savedTenders;
 		const newUser = { ...user, savedTenders: newSavedTenders };
+
+		if(status.errors)
+			setIsSaved(savedTenders.includes(id));
 
 		// This will update the state in Layout and cause everything to rerender.
 		// There is probably a better solution, but I am under the pressure of time,
@@ -59,11 +93,11 @@ export default function Result({ name, city, state, description, endDate, openin
 	return(
 		<div className={styles.result}>
 			<button
-				className={classNames({ [styles.save]: true, [styles.isSaved]: isSaved })}
+				className={classNames({ [styles.save]: true, [styles.isSaved]: isSaved && !fromSaved })}
 				onClick={onSaveTender}
-				title="Save tender">
-				<SaveIcon />
-				<span>{isSaved ? "saved" : "save"}</span>
+				title={!fromSaved ? (isSaved ? "Tender is saved" : "Save tender") : "Remove tender"}>
+				{isSaved && fromSaved ? <RemoveTender onClick={onRemoveTender} /> : <SaveIcon />}
+				<span>{!fromSaved ? (isSaved ? "saved" : "save") : ""}</span>
 			</button>
 			<div className={styles.nameAndLocation}>
 				<span className={styles.name}>{name}</span>
@@ -97,6 +131,15 @@ export default function Result({ name, city, state, description, endDate, openin
 	);
 }
 
+function RemoveTender({ onClick }){
+	return(
+		<button className={styles.close} onClick={onClick}>
+			<Icon name="close" color="red" />
+			Remove
+		</button>
+	);
+}
+
 function parseDate(dateStr){
 	return moment(dateStr).format("DD-MMM-YYYY hh:mm A");
 }
@@ -114,5 +157,10 @@ Result.propTypes = {
 	openingDate: PropTypes.string,
 	estAmount: PropTypes.number,
 	emd: PropTypes.number,
-	id: PropTypes.string
+	id: PropTypes.string,
+	fromSaved: PropTypes.bool
+};
+
+RemoveTender.propTypes = {
+	onClick: PropTypes.func
 };
