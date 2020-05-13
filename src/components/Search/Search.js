@@ -7,7 +7,7 @@ import AlgoliaImage from "../../images/algolia.png";
 // Styles
 import styles from "./search.module.css";
 
-export default function Search({ onSubmit }){
+export default function SearchInput({ onSubmit }){
 	const handleSubmit = (e) => {
 		const value = e.target.value;
 
@@ -29,6 +29,6 @@ export default function Search({ onSubmit }){
 	);
 }
 
-Search.propTypes = {
+SearchInput.propTypes = {
 	onSubmit: PropTypes.func
 };

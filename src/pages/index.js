@@ -3,7 +3,7 @@ import { Dropdown, Button } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
 import styles from "../styles/index.module.css";
-import Search from "../components/Search/Search";
+import SearchInput from "../components/Search/Search";
 
 export default function Home(){
 	const router = useRouter();
@@ -75,7 +75,7 @@ export default function Home(){
 					<div className={styles.line}></div>
 				</div>
 
-				<Search onSubmit={onSearch} />
+				<SearchInput onSubmit={onSearch} />
 			</div>
 		</Layout>
 	);
