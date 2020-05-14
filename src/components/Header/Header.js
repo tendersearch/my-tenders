@@ -22,7 +22,7 @@ export default function Header(){
 
 	useEffect( () => {
 		const loadSignIn = () => {
-			if(auth.google)
+			if(!auth.user.loggedIn && auth.google)
 				gapi.load("signin2", () => {
 					gapi.signin2.render("googleLoginButton", {
 						onsuccess: auth.signIn.bind(auth)
