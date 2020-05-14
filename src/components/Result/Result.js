@@ -54,7 +54,7 @@ mutation($tenderId: [ID], $userId: ID!){
 `;
 
 export default function Result({ name, city, state, description,
-	endDate, openingDate, estAmount, emd, id, fromSaved = false }){
+	endDate, openingDate, estAmount, emd, id, url, fromSaved = false }){
 	const userContext = useContext(UserContext);
 	const[user, setUser] = useState(userContext);
 	const[saveTender] = useMutation(SAVE_TENDER);
@@ -115,7 +115,7 @@ export default function Result({ name, city, state, description,
 					: <SaveTender onClick={onSaveTender} isSaved={isSaved} />
 			}
 			<div className={styles.nameAndLocation}>
-				<span className={styles.name}>{name}</span>
+				<a target="_blank" rel="noopener noreferrer" href={url} className={styles.name}>{name}</a>
 				<div className={styles.location}>
 					<LocationIcon className={styles.icon} />
 					<span className={styles.text}>{city}, {state}.</span>
@@ -194,7 +194,8 @@ Result.propTypes = {
 	estAmount: PropTypes.number,
 	emd: PropTypes.number,
 	id: PropTypes.string,
-	fromSaved: PropTypes.bool
+	fromSaved: PropTypes.bool,
+	url: PropTypes.string
 };
 
 RemoveTender.propTypes = {

@@ -72,6 +72,7 @@ function Results({ results }){
 					estAmount={result.estAmount}
 					endDate={result.endDate}
 					openingDate={result.openingDate}
+					url={result.url}
 					id={result.objectID}
 				/>
 			))}

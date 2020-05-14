@@ -23,6 +23,7 @@ query($id: ID!){
 				endDate
 				openingDate
 				estAmount
+				url
 				_id
 			}
 		}
