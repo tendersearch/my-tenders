@@ -48,12 +48,6 @@ module.exports = {
 			}
 		},
 		{
-			resource: Func("search_tender"),
-			actions: {
-				call: true
-			}
-		},
-		{
 			resource: Func("create_admin_user"),
 			actions: {
 				call: true
