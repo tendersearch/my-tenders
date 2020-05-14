@@ -100,13 +100,19 @@ class Auth extends EventEmitter{
 			return{};
 	}
 
+	async triggerSignup(){
+		const googleUser = await this.google.signIn();
+		this.googleUser = googleUser;
+		return this.signIn(googleUser);
+	}
+
 	async getUser(){
-		console.log("Getting user!");
+		const secret = Cookie.get("secret");
+		if(!secret) return{ loggedIn: false };
 
 		const currentUserResult = await client.query({ query: CURRENT_USER });
 		const{ data } = currentUserResult;
-		const currentUser = data.currentUser;
-		const secret = Cookie.get("secret");
+		const currentUser = data ? data.currentUser : {};
 		currentUser.loggedIn = !!secret;
 		currentUser.secret = secret;
 
@@ -116,7 +122,7 @@ class Auth extends EventEmitter{
 
 	async signIn(data){
 		const{ access_token: accessToken, id_token: tokenId } = data.tc;
-		this.login({ accessToken, tokenId });
+		return this.login({ accessToken, tokenId });
 	}
 
 	async login(data){
@@ -135,10 +141,11 @@ class Auth extends EventEmitter{
 
 		const result = await response.json();
 
+		console.log(result);
 		if(result.secret) Cookie.set("secret", result.secret);
 		else throw new Error("Could not login");
 
-		await this.getUser();
+		return this.getUser();
 	}
 
 	async becomeAdmin(){

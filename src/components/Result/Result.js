@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -55,15 +55,31 @@ mutation($tenderId: [ID], $userId: ID!){
 
 export default function Result({ name, city, state, description,
 	endDate, openingDate, estAmount, emd, id, fromSaved = false }){
-	const user = useContext(UserContext);
+	const userContext = useContext(UserContext);
+	const[user, setUser] = useState(userContext);
 	const[saveTender] = useMutation(SAVE_TENDER);
 	const[removeTender] = useMutation(REMOVE_TENDER);
 
-	const savedTenders = user.savedTenders.data ? user.savedTenders.data.map( item => item._id) : [];
+	useEffect( () => {
+		setUser(userContext);
+	}, [userContext]);
+
+	const savedTenders = user.savedTenders ? user.savedTenders.data.map( item => item._id) : [];
 	const[isSaved, setIsSaved] = useState(savedTenders.includes(id));
 
 	const onSaveTender = async () => {
 		if(isSaved) return;
+
+		if(!user.loggedIn) {
+			const newUser = await auth.triggerSignup();
+			if(!newUser) return;
+
+			const status = await saveTender({ variables: { tenderId: id, userId: newUser._id } });
+			setUser(newUser);
+			handleStatus(status);
+
+			return;
+		}
 
 		const status = await saveTender({ variables: { tenderId: id, userId: user._id } });
 		handleStatus(status);
@@ -79,8 +95,6 @@ export default function Result({ name, city, state, description,
 		const newSavedTenders = partialUpdateUser.savedTenders;
 		const newUser = { ...user, savedTenders: newSavedTenders };
 		const newIsSaved = newSavedTenders.data.includes(id);
-
-		console.log("Is saved", newIsSaved);
 
 		if(status.errors)
 			setIsSaved(newIsSaved);
