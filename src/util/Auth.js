@@ -51,7 +51,7 @@ class Auth extends EventEmitter{
 		gapi.load("auth2", async () => {
 			this.google = await gapi.auth2.init({
 				client_id: process.env.GOOGLE_CLIENT_ID,
-				redirect_uri: "http://localhost:3000"
+				redirect_uri: "https://tendersearch.in"
 			});
 
 			await getUser();
