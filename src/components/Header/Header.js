@@ -1,11 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import classNames from "classnames";
 
 // Components
 import Logo from "../Logo/Logo";
-import { GoogleLogin } from "react-google-login";
-import { Loader, Button, Icon } from "semantic-ui-react";
 
 // Contexts
 import UserContext from "../../contexts/userContext";
@@ -21,7 +19,6 @@ import styles from "./header.module.css";
 
 export default function Header(){
 	const user = useContext(UserContext);
-	const[loggingIn, setLoggingIn] = useState(false);
 
 	useEffect( () => {
 		const loadSignIn = () => {
@@ -40,14 +37,16 @@ export default function Header(){
 			setTimeout(loadSignIn, 1000);
 	});
 
+	const linkClasses = classNames({
+		[styles.link]: true,
+		[styles.disabled]: typeof window !== "undefined" ? !user.loggedIn : false
+	});
+
 	return(
 		<header className={styles.header}>
 			<nav>
 				<div
-					className={classNames({
-						[styles.link]: true,
-						[styles.disabled]: !user.loggedIn
-					})}>
+					className={linkClasses}>
 					<Link href="/saved">
 						<a>
 							<SavedIcon />
@@ -76,10 +75,7 @@ export default function Header(){
 
 							)
 							: (
-								<LoginWithGoogle
-									loggingIn={loggingIn}
-									onClick={auth.signIn}
-								/>
+								<LoginWithGoogle />
 							)
 					}
 				</div>
@@ -89,16 +85,8 @@ export default function Header(){
 	);
 }
 
-function LoginWithGoogle({ loggingIn, onSuccess, onRequest, onCompleted }){
-	if(!loggingIn)
-		return(
-			<div className={styles.googleLogin} id="googleLoginButton"></div>
-		);
-
-	if(loggingIn)
-		return(
-			<div className={styles.googleLogin}>
-				<Loader active={loggingIn} />
-			</div>
-		);
+function LoginWithGoogle(){
+	return(
+		<div className={styles.googleLogin} id="googleLoginButton"></div>
+	);
 }
