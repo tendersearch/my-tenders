@@ -48,7 +48,10 @@ function SavedTenders(){
 	const user = useContext(UserContext);
 	const router = useRouter();
 
-	if(!user.loggedIn) return router.replace("/");
+	if(!user.loggedIn) {
+		router.replace("/");
+		return"";
+	};
 
 	const{ loading, error, data } = useQuery(USERS_TENDERS, {
 		variables: { id: user._id },

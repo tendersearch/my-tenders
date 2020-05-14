@@ -49,6 +49,8 @@ const Profile = ({ user }) => {
 		if(!user.loggedIn) router.replace("/");
 	});
 
+	if(!user.loggedIn) return"";
+
 	const onSubmit = async data => {
 		setLoading(true);
 		const status = await editProfile({ variables: {
@@ -68,8 +70,6 @@ const Profile = ({ user }) => {
 			setSuccess(true);
 		}
 	};
-
-	if(!user.loggedIn) return"";
 
 	return(
 		<div className={styles.container}>
