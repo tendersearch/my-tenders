@@ -15,7 +15,7 @@ export default function Layout({ title, description, children }){
 	const themeColor = "#364aa2";
 
 	useEffect( () => {
-		auth.on("user_change", setUser);
+		auth.once("user_change", setUser);
 	});
 
 	return(

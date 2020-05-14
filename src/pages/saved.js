@@ -3,11 +3,11 @@ import Result from "../components/Result/Result";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Loader } from "semantic-ui-react";
-import auth from "../util/Auth";
 
 // Styles
 import styles from "../styles/saved.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
+import UserContext from "../contexts/userContext";
 
 const USERS_TENDERS = gql`
 query($id: ID!){
@@ -44,7 +44,7 @@ export default function saved(){
 
 function SavedTenders(){
 	if(typeof window === "undefined") return"";
-	const[user, setUser] = useState(auth.user);
+	const user = useContext(UserContext);
 
 	const{ loading, error, data } = useQuery(USERS_TENDERS, {
 		variables: { id: user._id },
@@ -52,11 +52,6 @@ function SavedTenders(){
 	});
 	const allTenders = data ? data.findUserByID.savedTenders.data : user.savedTenders.data;
 	const tenders = allTenders.filter( tender => user.savedTenders.data.map( t => t._id).includes(tender._id));
-
-	console.log(allTenders);
-	console.log(user.savedTenders);
-
-	auth.on("user_change", setUser, true);
 
 	useEffect( () => {
 		if(error)
