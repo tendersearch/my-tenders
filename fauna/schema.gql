@@ -2,6 +2,7 @@ type User{
 	name: String!
 	company: String
 	email: String!
+	phone: String
 	keywords: String
 	userId: String! @unique
 	role: Role!
