@@ -38,16 +38,22 @@ class Auth extends EventEmitter{
 	}
 
 	async init(){
-		if(typeof window !== "undefined")
-			gapi.load("auth2", async () => {
-				this.google = await gapi.auth2.init({
-					client_id: process.env.GOOGLE_CLIENT_ID
-				});
+		if(typeof window === "undefined") return;
 
-				await this.getUser();
-				this.googleUser = this.google.currentUser.get();
-				this.onReady();
+		if(typeof gapi === "undefined") {
+			setTimeout(this.init, 300);
+			return;
+		}
+
+		gapi.load("auth2", async () => {
+			this.google = await gapi.auth2.init({
+				client_id: process.env.GOOGLE_CLIENT_ID
 			});
+
+			await this.getUser();
+			this.googleUser = this.google.currentUser.get();
+			this.onReady();
+		});
 	}
 
 	set user(user){
