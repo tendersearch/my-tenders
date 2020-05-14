@@ -8,6 +8,9 @@ query{
 	currentUser{
 		name
 		email
+		phone
+		keywords
+		company
 		userId
 		role
 		_id
