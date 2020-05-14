@@ -87,7 +87,7 @@ function Results({ results }){
 }
 
 function buildFilter(obj){
-	let filter = `end_timestamp > ${new Date("2020-01-01").getTime()}`;
+	let filter = `end_timestamp > ${Date.now()}`;
 	const keys = Object.keys(obj).filter( key => obj[key]);
 
 	const addFilter = keys.map( (cur, idx) => {
