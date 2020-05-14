@@ -3,6 +3,7 @@ import Result from "../components/Result/Result";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Loader } from "semantic-ui-react";
+import { useRouter } from "next/router";
 
 // Styles
 import styles from "../styles/saved.module.css";
@@ -45,12 +46,18 @@ export default function saved(){
 function SavedTenders(){
 	if(typeof window === "undefined") return"";
 	const user = useContext(UserContext);
+	const router = useRouter();
+
+	if(!user.loggedIn) return router.replace("/");
 
 	const{ loading, error, data } = useQuery(USERS_TENDERS, {
 		variables: { id: user._id },
 		fetchPolicy: "cache-and-network"
 	});
-	const allTenders = data ? data.findUserByID.savedTenders.data : user.savedTenders.data;
+
+	const allTenders = typeof data !== "undefined"
+		? data.findUserByID.savedTenders.data
+		: (user ? user.savedTenders.data : []);
 	const tenders = allTenders.filter( tender => user.savedTenders.data.map( t => t._id).includes(tender._id));
 
 	useEffect( () => {
