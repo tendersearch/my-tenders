@@ -13,7 +13,7 @@ module.exports = withImages(withPWA({
 	pwa: {
 		dest: "public",
 		disable: process.env.NODE_ENV === "development",
-		register: process.env.NODE_ENV === "development"
+		register: process.env.NODE_ENV !== "development"
 	},
 	exclude: [
 		path.resolve(__dirname, "src/images/icons"),

@@ -24,12 +24,12 @@ export default function Layout({ title, description, children }){
 				<Head>
 					<title>{title}</title>
 					<meta name="description" content={description} />
-					<link rel="icon" href="/favicon.ico" />
+					<link rel="shortcut icon" href="/icons/icon-72x72.png" />
 
 					<link rel="manifest" href="/manifest.json" />
-					<link href='/favicon-16x16.png' rel='icon' type='image/png' sizes='16x16' />
-					<link href='/favicon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
-					<link rel="apple-touch-icon" href="/apple-icon.png"></link>
+					<link href='/icons/icon-16x16.png' rel='icon' type='image/png' sizes='16x16' />
+					<link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
+					<link rel="apple-touch-icon" href="/icons/icon-144x144.png"></link>
 					<meta name="theme-color" content={themeColor}/>
 
 					<script src="https://apis.google.com/js/api.js" async defer></script>
