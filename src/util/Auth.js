@@ -43,17 +43,17 @@ class Auth extends EventEmitter{
 	async init(){
 		if(typeof window === "undefined") return;
 
-		if(typeof gapi === "undefined") {
-			setTimeout(this.init, 300);
-			return;
-		}
+		if(typeof gapi === "undefined")
+			return setTimeout(this.init, 300);
+
+		const getUser = this.getUser.bind(this);
 
 		gapi.load("auth2", async () => {
 			this.google = await gapi.auth2.init({
 				client_id: process.env.GOOGLE_CLIENT_ID
 			});
 
-			await this.getUser();
+			await getUser();
 			this.googleUser = this.google.currentUser.get();
 			this.onReady();
 		});
@@ -75,6 +75,9 @@ class Auth extends EventEmitter{
 			return{ loggedIn: false };
 		}else{
 			const user = JSON.parse(stored);
+			const secret = Cookie.get("secret");
+
+			if(!secret) user.loggedIn = false;
 
 			return user;
 		}
@@ -98,11 +101,14 @@ class Auth extends EventEmitter{
 	}
 
 	async getUser(){
+		console.log("Getting user!");
+
 		const currentUserResult = await client.query({ query: CURRENT_USER });
 		const{ data } = currentUserResult;
 		const currentUser = data.currentUser;
-		currentUser.loggedIn = true;
-		currentUser.secret = Cookie.get("secret");
+		const secret = Cookie.get("secret");
+		currentUser.loggedIn = !!secret;
+		currentUser.secret = secret;
 
 		this.user = currentUser || { loggedIn: false };
 		return currentUser;
