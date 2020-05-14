@@ -134,7 +134,7 @@ export default function Result({ name, city, state, description,
 					<span className={styles.value}>{parseDate(openingDate)}</span>
 				</div>
 				<div className={classNames(styles.estAmount, styles.metaInfo)}>
-					<span className={styles.label}>Estimated Amount</span>
+					<span className={styles.label}>Tender fees</span>
 					<span className={styles.value}>Rs. {parseNumber(estAmount)}</span>
 				</div>
 				<div className={classNames(styles.emdAmount, styles.metaInfo)}>
