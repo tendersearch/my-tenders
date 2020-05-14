@@ -59,6 +59,7 @@ export default function Home({ filters }){
 		>
 			<div className={styles.contentWrapper}>
 				<div className={styles.container}>
+					<span className={styles.advanced}>Advanced search</span>
 					<div className={styles.wrapper}>
 						<Dropdown
 							onChange={onOrgChange}
