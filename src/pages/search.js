@@ -26,6 +26,7 @@ export default function Search(){
 				filters: decodeURIComponent(buildFilter({ department: dep, name: org, city, state }))
 			});
 
+			console.log("The query", query);
 			console.log(search);
 			setResults(search.hits);
 			setLoading(false);
@@ -45,7 +46,7 @@ export default function Search(){
 			title={`Tender search: ${q}`}
 		>
 			<div className={styles.container}>
-				<SearchInput onSubmit={onSearch} />
+				<SearchInput onSubmit={onSearch} defaultValue={query} />
 				{
 					loading
 						? <Loader active />
