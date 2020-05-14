@@ -65,8 +65,6 @@ export default function Result({ name, city, state, description,
 	const onSaveTender = async () => {
 		if(isSaved) return;
 
-		setIsSaved(true);
-
 		const status = await saveTender({ variables: { tenderId: id, userId: user._id } });
 		handleStatus(status);
 	};
@@ -80,9 +78,14 @@ export default function Result({ name, city, state, description,
 		const partialUpdateUser = status.data.partialUpdateUser;
 		const newSavedTenders = partialUpdateUser.savedTenders;
 		const newUser = { ...user, savedTenders: newSavedTenders };
+		const newIsSaved = newSavedTenders.data.includes(id);
+
+		console.log("Is saved", newIsSaved);
 
 		if(status.errors)
-			setIsSaved(savedTenders.includes(id));
+			setIsSaved(newIsSaved);
+		else if(!status.errors)
+			setIsSaved(true);
 
 		// This will update the state in Layout and cause everything to rerender.
 		// There is probably a better solution, but I am under the pressure of time,
@@ -92,13 +95,11 @@ export default function Result({ name, city, state, description,
 
 	return(
 		<div className={styles.result}>
-			<button
-				className={classNames({ [styles.save]: true, [styles.isSaved]: isSaved && !fromSaved })}
-				onClick={onSaveTender}
-				title={!fromSaved ? (isSaved ? "Tender is saved" : "Save tender") : "Remove tender"}>
-				{isSaved && fromSaved ? <RemoveTender onClick={onRemoveTender} /> : <SaveIcon />}
-				<span>{!fromSaved ? (isSaved ? "saved" : "save") : ""}</span>
-			</button>
+			{
+				isSaved && fromSaved
+					? <RemoveTender onClick={onRemoveTender} />
+					: <SaveTender onClick={onSaveTender} isSaved={isSaved} />
+			}
 			<div className={styles.nameAndLocation}>
 				<span className={styles.name}>{name}</span>
 				<div className={styles.location}>
@@ -133,9 +134,26 @@ export default function Result({ name, city, state, description,
 
 function RemoveTender({ onClick }){
 	return(
-		<button className={styles.close} onClick={onClick}>
-			<Icon name="close" color="red" />
+		<div className={styles.save}>
+			<button className={styles.close} onClick={onClick}>
+				<Icon name="close" color="red" />
 			Remove
+			</button>
+		</div>
+
+	);
+}
+
+function SaveTender({ onClick, isSaved }){
+	const classes = classNames({
+		[styles.save]: true,
+		[styles.isSaved]: isSaved
+	});
+
+	return(
+		<button className={classes} onClick={onClick}>
+			<SaveIcon />
+			<span>{isSaved ? "saved" : "save"}</span>
 		</button>
 	);
 }
@@ -167,4 +185,9 @@ Result.propTypes = {
 
 RemoveTender.propTypes = {
 	onClick: PropTypes.func
+};
+
+SaveTender.propTypes = {
+	onClick: PropTypes.func,
+	isSaved: PropTypes.bool
 };

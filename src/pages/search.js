@@ -22,8 +22,8 @@ export default function Search(){
 	useEffect( () => {
 		const doSearch = async () => {
 			setLoading(true);
-			const search = await index.search(query, {
-				filters: buildFilter({ department: dep, name: org, city, state })
+			const search = await index.search(decodeURIComponent(query), {
+				filters: decodeURIComponent(buildFilter({ department: dep, name: org, city, state }))
 			});
 
 			console.log(search);
@@ -85,12 +85,12 @@ function Results({ results }){
 }
 
 function buildFilter(obj){
-	let filter = `end_timestamp > ${Date.now()}`;
+	let filter = `end_timestamp > ${new Date("2020-01-01").getTime()}`;
 	const keys = Object.keys(obj).filter( key => obj[key]);
 
 	const addFilter = keys.map( (cur, idx) => {
 		return`${cur}:'${obj[cur]}'`;
-	}).join(" OR ");
+	}).join(" AND ");
 
 	if(keys.length > 0) filter += ` AND (${addFilter})`;
 
