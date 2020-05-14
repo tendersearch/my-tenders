@@ -5,10 +5,11 @@ import { Form, Input, Button, Label, Message } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import { useRouter } from "next/router";
 
 // Styles
 import styles from "../styles/profile.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EDIT_PROFILE = gql`
 mutation($company: String, $phone: String, $keywords: String, $userId: ID!){
@@ -42,6 +43,11 @@ const Profile = ({ user }) => {
 	const[error, setError] = useState(false);
 	const[success, setSuccess] = useState(false);
 	const[loading, setLoading] = useState(false);
+	const router = useRouter();
+
+	useEffect( () => {
+		if(!user.loggedIn) router.replace("/");
+	});
 
 	const onSubmit = async data => {
 		setLoading(true);
@@ -62,6 +68,8 @@ const Profile = ({ user }) => {
 			setSuccess(true);
 		}
 	};
+
+	if(!user.loggedIn) return"";
 
 	return(
 		<div className={styles.container}>
