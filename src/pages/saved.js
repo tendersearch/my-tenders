@@ -4,13 +4,16 @@ import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Loader } from "semantic-ui-react";
 
+// Context
+import UserContext from "../contexts/userContext";
+
 // Styles
 import styles from "../styles/saved.module.css";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 
 const USERS_TENDERS = gql`
-query{
-	currentUser{
+query($id: ID!){
+	findUserByID(id: $id){
 		savedTenders{
 			data{
 				name
@@ -42,8 +45,11 @@ export default function saved(){
 }
 
 function SavedTenders(){
-	const{ loading, error, data } = useQuery(USERS_TENDERS);
-	const tenders = data ? data.currentUser.savedTenders.data : [];
+	if(typeof window === "undefined") return"";
+
+	const user = useContext(UserContext);
+	const{ loading, error, data } = useQuery(USERS_TENDERS, { variables: { id: user._id } });
+	const tenders = data ? data.findUserByID.savedTenders.data : [];
 
 	console.log(tenders);
 
