@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import auth from "../../util/Auth";
-import { Button, Modal, Dropdown, Divider } from "semantic-ui-react";
+import { Button, Modal, Dropdown, Divider, Message } from "semantic-ui-react";
 import moment from "moment";
 
 import PropTypes from "prop-types";
@@ -10,6 +10,9 @@ export default function AddTendersFromSpreadsheet({ className }){
 	const[fetching, setFetching] = useState(true);
 	const[sheets, setSheets] = useState([]);
 	const[sheetId, setSheetId] = useState(null);
+	const[uploading, setUploading] = useState(false);
+	const[error, setError] = useState(false);
+	const[success, setSuccess] = useState(false);
 
 	useEffect( () => {
 		const fetchSheets = async () => {
@@ -24,8 +27,8 @@ export default function AddTendersFromSpreadsheet({ className }){
 	});
 
 	const onSubmit = async () => {
+		setUploading(true);
 		const sheetData = await fetchSpreadsheet(user, sheetId);
-		console.log(sheetData);
 		const response = await fetch("/api/tender/add", {
 			method: "POST",
 			headers: {
@@ -34,10 +37,12 @@ export default function AddTendersFromSpreadsheet({ className }){
 			},
 			body: JSON.stringify(sheetData)
 		});
+		setUploading(false);
 
-		const result = await response.json();
-
-		console.log(result);
+		if(response.ok)
+			setSuccess(true);
+		else
+			setError(true);
 	};
 
 	const onChange = (e, { value }) => {
@@ -53,6 +58,19 @@ export default function AddTendersFromSpreadsheet({ className }){
 			>
 				<Modal.Header>Select spreadsheet to fetch tenders from</Modal.Header>
 				<Modal.Content>
+					<Message
+						positive
+						hidden={!success}
+						header="Tenders saved"
+						content="Your new tenders were successfully saved!"
+					/>
+					<Message
+						warning
+						hidden={!error}
+						header="Failed to save tenders"
+						content="Something went wrong when saving your new tenders."
+					/>
+
 					<Dropdown
 						control="select"
 						placeholder="Select Spreadsheet"
@@ -69,7 +87,7 @@ export default function AddTendersFromSpreadsheet({ className }){
 
 					<Divider hidden />
 
-					<Button onClick={onSubmit} primary>Fetch tenders</Button>
+					<Button onClick={onSubmit} primary loading={uploading}>Fetch tenders</Button>
 				</Modal.Content>
 			</Modal>
 		</div>
