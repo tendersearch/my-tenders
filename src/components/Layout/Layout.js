@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
+import dynamic from "next/dynamic";
 import Head from "next/head";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
 import { ApolloProvider } from "@apollo/react-hooks";
 import auth from "../../util/Auth";
 import client from "../../util/client";
@@ -10,7 +10,14 @@ import PropTypes from "prop-types";
 // Context
 import UserContext from "../../contexts/userContext";
 
+const Footer = dynamic( () => import("../Footer/Footer") );
+const Header = dynamic( () => import("../Header/Header") );
+
 export default function Layout({ title, description, children }){
+	const isDesktop = useMediaQuery({
+		query: "(min-width: 800px)"
+	});
+
 	const[user, setUser] = useState(auth.user);
 	const themeColor = "#364aa2";
 
@@ -32,11 +39,13 @@ export default function Layout({ title, description, children }){
 					<link rel="apple-touch-icon" href="/icons/icon-144x144.png"></link>
 					<meta name="theme-color" content={themeColor}/>
 
-					<script src="https://apis.google.com/js/api.js" async defer></script>
+					<link rel="preconnect" href="https://apis.google.com" />
+					<link rel="preconnect" href="https://accounts.google.com" />
+					<link rel="preconnect" href="https://ssl.gstatic.com" />
 				</Head>
 				<Header />
 				<main>{children}</main>
-				<Footer />
+				{!isDesktop ? <Footer /> : ""}
 			</ApolloProvider>
 		</UserContext.Provider>
 	);

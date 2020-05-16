@@ -3,6 +3,9 @@ import gql from "graphql-tag";
 import Cookie from "js-cookie";
 import EventEmitter from "events";
 
+if(typeof window !== "undefined")
+	import("../util/gapi");
+
 const CURRENT_USER = gql`
 query{
 	currentUser{
@@ -34,8 +37,8 @@ class Auth extends EventEmitter{
 		super();
 
 		this.google = null;
-		this.onReady = () => { console.log("Auth client ready"); };
 		this.adminScopes = "https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/drive.readonly";
+		this.on("ready", () => { console.log("Auth client ready"); });
 
 		this.init();
 	}
@@ -46,17 +49,13 @@ class Auth extends EventEmitter{
 		if(typeof gapi === "undefined")
 			return setTimeout(this.init, 300);
 
-		const getUser = this.getUser.bind(this);
-
-		gapi.load("auth2", async () => {
+		await gapi.load("auth2", async () => {
 			this.google = await gapi.auth2.init({
 				client_id: process.env.GOOGLE_CLIENT_ID,
 				redirect_uri: "https://tendersearch.in"
 			});
 
-			await getUser();
 			this.googleUser = this.google.currentUser.get();
-			this.onReady();
 		});
 	}
 

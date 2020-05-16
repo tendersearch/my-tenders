@@ -1,5 +1,6 @@
 import ApolloClient from "apollo-boost";
 import Cookie from "js-cookie";
+import "isomorphic-fetch";
 
 const GUEST_KEY = process.env.FAUNADB_GUEST_KEY;
 

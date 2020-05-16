@@ -1,5 +1,7 @@
-import { Input, Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
+
+// Semantic ui
+import { Input, Icon } from "semantic-ui-react";
 
 // Icons
 import AlgoliaImage from "../../images/algolia.png";

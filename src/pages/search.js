@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import PropTypes from "prop-types";
 import styles from "../styles/search.module.css";
 import algoliasearch from "algoliasearch/lite";
 
+// Semantic ui
+import { Loader } from "semantic-ui-react";
+
 // Components
 import SearchInput from "../components/Search/Search";
 import Layout from "../components/Layout/Layout";
-import Result from "../components/Result/Result";
-import { Loader } from "semantic-ui-react";
+
+const Result = dynamic( () => import("../components/Result/Result"), {
+	loading: <Loader active />
+});
 
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_SEARCH_KEY);
 const index = client.initIndex("tender");

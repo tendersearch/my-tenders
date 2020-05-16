@@ -1,8 +1,10 @@
 import Layout from "../components/Layout/Layout";
-import { Dropdown, Button } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import faunadb from "faunadb";
 import PropTypes from "prop-types";
+
+// Semantic ui
+import { Dropdown, Button } from "semantic-ui-react";
 
 import styles from "../styles/index.module.css";
 import SearchInput from "../components/Search/Search";

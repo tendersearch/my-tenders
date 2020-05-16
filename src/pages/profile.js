@@ -1,11 +1,13 @@
 import Layout from "../components/Layout/Layout";
 import auth from "../util/Auth";
 import PropTypes from "prop-types";
-import { Form, Input, Button, Label, Message } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
+
+// Semantic ui
+import { Form, Input, Button, Label, Message } from "semantic-ui-react";
 
 // Styles
 import styles from "../styles/profile.module.css";

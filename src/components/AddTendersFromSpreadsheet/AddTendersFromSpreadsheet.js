@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import auth from "../../util/Auth";
-import { Button, Modal, Dropdown, Divider, Message } from "semantic-ui-react";
 import moment from "moment";
+
+// Semantic ui
+import { Button, Modal, Dropdown, Divider, Message } from "semantic-ui-react";
 
 import PropTypes from "prop-types";
 

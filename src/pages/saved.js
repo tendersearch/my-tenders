@@ -2,8 +2,10 @@ import Layout from "../components/Layout/Layout";
 import Result from "../components/Result/Result";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
+
+// Semantic ui
+import { Loader } from "semantic-ui-react";
 
 // Styles
 import styles from "../styles/saved.module.css";

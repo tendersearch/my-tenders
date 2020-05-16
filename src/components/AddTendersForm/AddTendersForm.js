@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Button, Form, Input, Label, Header } from "semantic-ui-react";
 import Datetime from "react-datetime";
 import { useForm } from "react-hook-form";
 import auth from "../../util/Auth";
+
+// Semantic ui
+import { Button, Form, Input, Label, Header } from "semantic-ui-react";
 
 const AddTendersForm = () => {
 	const{ register, handleSubmit, errors } = useForm();

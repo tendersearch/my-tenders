@@ -6,9 +6,11 @@ import auth from "../../util/Auth";
 // Components
 import Layout from "../../components/Layout/Layout";
 import UserContext from "../../contexts/userContext";
-import { Button, Icon, Divider } from "semantic-ui-react";
 import AddTendersForm from "../../components/AddTendersForm/AddTendersForm";
 import AddTendersFromSpreadsheet from "../../components/AddTendersFromSpreadsheet/AddTendersFromSpreadsheet";
+
+// Semantic ui
+import { Button, Icon, Divider } from "semantic-ui-react";
 
 // Styles
 import styles from "../../styles/admin.module.css";

@@ -5,6 +5,8 @@ import moment from "moment";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import auth from "../../util/Auth";
+
+// Semantic ui
 import { Icon } from "semantic-ui-react";
 
 // Context

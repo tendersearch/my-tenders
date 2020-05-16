@@ -6,5 +6,9 @@
 	"globals": {
 		"React": "writable",
 		"gapi": "readonly"
+	},
+	"parserOptions": {
+		"ecmaVersion": 11,
+		"sourceType": "module"
 	}
 }
