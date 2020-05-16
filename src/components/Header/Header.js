@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import classNames from "classnames";
 
 // Components
 import Logo from "../Logo/Logo";
+import GoogleButton from "../GoogleButton/GoogleButton";
 
 // Contexts
 import UserContext from "../../contexts/userContext";
@@ -19,23 +20,14 @@ import styles from "./header.module.css";
 
 export default function Header(){
 	const user = useContext(UserContext);
+	const[loggingIn, setLoggingIn] = useState(false);
 
-	useEffect( () => {
-		const loadSignIn = () => {
-			if(!auth.user.loggedIn && auth.google)
-				gapi.load("signin2", () => {
-					gapi.signin2.render("googleLoginButton", {
-						onsuccess: auth.signIn.bind(auth)
-					});
-				});
-		};
-
-		if(auth.google)
-			loadSignIn();
-
-		if(!auth.google)
-			setTimeout(loadSignIn, 1000);
-	});
+	const onLogin = async () => {
+		setLoggingIn(true);
+		const user = await auth.triggerSignup().catch( () => { setLoggingIn(false); } );
+		console.log(user);
+		setLoggingIn(false);
+	};
 
 	const linkClasses = classNames({
 		[styles.link]: true,
@@ -74,19 +66,11 @@ export default function Header(){
 								</Link>
 
 							)
-							: (
-								<LoginWithGoogle />
-							)
+							: <GoogleButton onClick={onLogin} loading={loggingIn} />
 					}
 				</div>
 
 			</nav>
 		</header>
-	);
-}
-
-function LoginWithGoogle(){
-	return(
-		<div className={styles.googleLogin} id="googleLoginButton"></div>
 	);
 }

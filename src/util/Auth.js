@@ -2,9 +2,7 @@ import client from "./client";
 import gql from "graphql-tag";
 import Cookie from "js-cookie";
 import EventEmitter from "events";
-
-if(typeof window !== "undefined")
-	import("../util/gapi");
+import gapi from "./gapi";
 
 const CURRENT_USER = gql`
 query{

@@ -1,4 +1,5 @@
 const path = require("path");
+const withReactSvg = require("next-react-svg");
 const withPWA = require("next-pwa");
 const withImages = require("next-images");
 const withPurgeCss = require("next-purgecss");
@@ -44,6 +45,11 @@ module.exports = withPlugins(
 					]
 				}
 			}
+		],
+		[
+			withReactSvg, {
+				include: path.resolve(__dirname, "src/images")
+			}
 		]
 	], {
 		compress: true,
@@ -59,14 +65,7 @@ module.exports = withPlugins(
 
 			const startRules = config.module.rules;
 			const newRules = [
-				...startRules,
-				{
-					test: /.*.svg$/,
-					issuer: {
-						test: /\.(js|ts)x?$/
-					},
-					use: ["@svgr/webpack"]
-				}
+				...startRules
 			];
 			config.plugins = config.plugins || [];
 			config.plugins.push(new OptimizeCSSAssetsPlugin({
