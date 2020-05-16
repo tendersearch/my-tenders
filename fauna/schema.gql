@@ -84,4 +84,5 @@ type Mutation{
 	loginUser(input: LoginUserInput): String @resolver(name: "login_user")
 	createTenders(input: [CreateTenderInput]): [CreatedTender] @resolver(name: "create_tenders")
 	createAdminUser: Boolean! @resolver(name: "create_admin_user")
+	logout: Boolean @resolver(name: "logout")
 }

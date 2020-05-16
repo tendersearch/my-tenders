@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import Cookie from "js-cookie";
 import EventEmitter from "events";
 import gapi from "./gapi";
+import Router from "next/router";
 
 const CURRENT_USER = gql`
 query{
@@ -27,6 +28,12 @@ query{
 const CREATE_ADMIN_USER = gql`
 mutation{
 	createAdminUser
+}
+`;
+
+const LOGOUT = gql`
+mutation{
+	logout
 }
 `;
 
@@ -118,6 +125,15 @@ class Auth extends EventEmitter{
 		return currentUser;
 	}
 
+	async signOut(){
+		const gSignedOut = await this.google.signOut();
+		console.log(gSignedOut);
+		const fSignedOut = await this.logout();
+		console.log(fSignedOut);
+
+		Router.reload();
+	}
+
 	async signIn(data){
 		const{ access_token: accessToken, id_token: tokenId } = data.tc;
 		return this.login({ accessToken, tokenId });
@@ -144,6 +160,14 @@ class Auth extends EventEmitter{
 		else throw new Error("Could not login");
 
 		return this.getUser();
+	}
+
+	async logout(){
+		const{ data } = await client.mutate({ mutation: LOGOUT });
+		const wasLoggedOut = data.logout;
+		Cookie.remove("secret");
+
+		return wasLoggedOut;
 	}
 
 	async becomeAdmin(){

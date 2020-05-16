@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
+import GoogleButton from "../components/GoogleButton/GoogleButton";
 
 // Semantic ui
 import { Form, Input, Button, Label, Message } from "semantic-ui-react";
@@ -40,11 +41,6 @@ export default function ProfilePage(){
 }
 
 const Profile = ({ user }) => {
-	const{ register, handleSubmit, errors } = useForm();
-	const[editProfile] = useMutation(EDIT_PROFILE);
-	const[error, setError] = useState(false);
-	const[success, setSuccess] = useState(false);
-	const[loading, setLoading] = useState(false);
 	const router = useRouter();
 
 	useEffect( () => {
@@ -52,6 +48,21 @@ const Profile = ({ user }) => {
 	});
 
 	if(!user.loggedIn) return"";
+
+	return(
+		<div className={styles.container}>
+			<EditProfile user={user} />
+			<Logout />
+		</div>
+	);
+};
+
+const EditProfile = ({ user }) => {
+	const{ register, handleSubmit, errors } = useForm();
+	const[editProfile] = useMutation(EDIT_PROFILE);
+	const[error, setError] = useState(false);
+	const[success, setSuccess] = useState(false);
+	const[loading, setLoading] = useState(false);
 
 	const onSubmit = async data => {
 		setLoading(true);
@@ -72,9 +83,8 @@ const Profile = ({ user }) => {
 			setSuccess(true);
 		}
 	};
-
 	return(
-		<div className={styles.container}>
+		<section className={styles.editProfile}>
 			<Form onSubmit={handleSubmit(onSubmit)} success={success} error={error}>
 				<Message
 					error
@@ -155,8 +165,30 @@ const Profile = ({ user }) => {
 
 				<Button primary loading={loading}>Save</Button>
 			</Form>
-		</div>
+		</section>
 	);
+};
+
+const Logout = () => {
+	const[signingOut, setSigningOut] = useState(false);
+
+	const onSignout = async () => {
+		setSigningOut(true);
+		const signedOut = await auth.signOut().catch( () => { setSigningOut(false); });
+		console.log(signedOut);
+		setSigningOut(false);
+	};
+
+	return(
+		<section className={styles.logout}>
+			<h2>Sign out</h2>
+			<GoogleButton onClick={onSignout} loading={signingOut} text="Sign out" />
+		</section>
+	);
+};
+
+EditProfile.propTypes = {
+	user: PropTypes.object
 };
 
 Profile.propTypes = {

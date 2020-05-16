@@ -54,6 +54,12 @@ module.exports = {
 			}
 		},
 		{
+			resource: Func("logout"),
+			actions: {
+				call: true
+			}
+		},
+		{
 			resource: Index("userByRole"),
 			actions: {
 				unrestricted_read: false,
