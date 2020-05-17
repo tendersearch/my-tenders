@@ -85,6 +85,7 @@ const EditProfile = ({ user }) => {
 	};
 	return(
 		<section className={styles.editProfile}>
+			<h2>Edit profile</h2>
 			<Form onSubmit={handleSubmit(onSubmit)} success={success} error={error}>
 				<Message
 					error

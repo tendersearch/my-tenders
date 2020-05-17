@@ -2,8 +2,9 @@
 	box-sizing: border-box;
 	padding: 0 1rem;
 	max-width: 600px;
-	margin: 3rem auto;
+	margin: 1rem auto;
 }
 .logout{
-	margin-top: 50px;
+	margin-top: 40px;
+	padding-bottom: 5rem;
 }
