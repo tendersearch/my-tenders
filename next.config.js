@@ -34,15 +34,28 @@ module.exports = withPlugins(
 				purgeCssEnabled: ({ dev, isServer }) => (!dev && !isServer),
 				purgeCss: {
 					whitelistPatterns: () => [
-						/(html|body|before|after|root|not|a|p|i|span|h1|h2|h3|h4|h5|h6)/,
+						/(html|body|root|^a$|p|i|span|h1|h2|h3|h4|h5|h6|^nav$)/,
 						/(button|input|optgroup|select|textarea)/,
 						/.*_.*/,
-						/ui.*(button|form|input|label|labels|message|loader|icon|divider|header|modal)/,
+						// Dropdown
+						/(dropdown|fluid|selection|search|icon|transition|menu|item|text)/,
+						// Form
+						/(form|field|fields|equal|width|labeled|label)/,
+						// Message
+						/message/,
+						// Modal
+						/(modals|modal|dimmer|transition|page)/,
+						// Icons
+						/(icon|close|red|key)/,
+						// Modifiers
+						/(active|selected|error|success|visible|hidden|basic|mini|transition|header|content)/,
+						/* /ui?(button|form|input|label|labels|message|loader|icon|divider|header|modal)/, */
 						/(active|loading|visible|hidden|selection|field|fields)/
 					],
-					whitelistPatternsChildren: () => [
-						/dropdown/
-					]
+					whitelistPatternsChildren: [
+						/form/
+					],
+					css: () => [/semantic.css$/]
 				}
 			}
 		],
