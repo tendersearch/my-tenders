@@ -12,9 +12,7 @@ import { Loader } from "semantic-ui-react";
 import SearchInput from "../components/Search/Search";
 import Layout from "../components/Layout/Layout";
 
-const Result = dynamic( () => import("../components/Result/Result"), {
-	loading: <Loader active />
-});
+const Result = dynamic( () => import("../components/Result/Result"));
 
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_SEARCH_KEY);
 const index = client.initIndex("tender");
@@ -32,8 +30,6 @@ export default function Search(){
 				filters: decodeURIComponent(buildFilter({ department: dep, name: org, city, state }))
 			});
 
-			console.log("The query", query);
-			console.log(search);
 			setResults(search.hits);
 			setLoading(false);
 		};
@@ -93,7 +89,7 @@ function Results({ results }){
 }
 
 function buildFilter(obj){
-	let filter = `end_timestamp > ${Date.now()}`;
+	let filter = `end_timestamp > ${new Date("2020-01-01").getTime()}`;
 	const keys = Object.keys(obj).filter( key => obj[key]);
 
 	const addFilter = keys.map( (cur, idx) => {

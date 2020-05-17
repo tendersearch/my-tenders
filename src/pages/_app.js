@@ -10,8 +10,17 @@ import "react-datetime/css/react-datetime.css";
 import "../styles/globals.css";
 import "isomorphic-fetch";
 
+import PWAContext from "../contexts/pwaContext";
+import { usePWA } from "../util/usePWA";
+
 function CustomApp({ Component, pageProps }){
-	return<Component {...pageProps} />;
+	const[prompt, promptToInstall] = usePWA();
+
+	return(
+		<PWAContext.Provider value={ { prompt, promptToInstall } }>
+			<Component {...pageProps} />
+		</PWAContext.Provider>
+	);
 }
 
 CustomApp.propTypes = {
