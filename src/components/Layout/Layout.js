@@ -47,12 +47,9 @@ export default function Layout({ title, description, children, searchIsFocused }
 				<main>{children}</main>
 				{
 					!isDesktop
-						? (
-							searchIsFocused
-								? ""
-								: <Footer />
-						)
-						: ""}
+						? searchIsFocused ? "" : <Footer />
+						: ""
+				}
 			</ApolloProvider>
 		</UserContext.Provider>
 	);
