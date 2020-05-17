@@ -1,23 +1,21 @@
 const{ query } = require("faunadb");
-const{ Query, Lambda, Update, If, Equals, Count, Match, Index, Identity, Select, Get, Do } = query;
+const{ Query, Lambda, Exists, Update, If, Match, Index, Identity, Do, Not } = query;
 
 module.exports = {
 	name: "create_admin_user",
-	role: null,
+	role: "server",
 	body:
 	Query(
 		Lambda(
 			[],
 			If(
-				Equals(Count(Match(Index("userByRole"), "ADMIN")), 0),
+				Not(Exists(Match(Index("userByRole"), "ADMIN"))),
 				Do(
-					Update(Identity(),
-						{
-							data: { role: "ADMIN" }
-						}
-					),
-					Equals(Select(["data", "role"], Get(Identity())), "ADMIN")
+					// Update the users role and return true if no admin exists.
+					Update(Identity(), { data: { role: "ADMIN" } }),
+					true
 				),
+				// return false if an admin exists already
 				false
 			)
 		)

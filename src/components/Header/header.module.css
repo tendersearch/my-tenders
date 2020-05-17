@@ -2,7 +2,7 @@
 	width: 100%;
 	max-width: 1000px;
 	margin: auto;
-	padding: 2rem 3rem .5rem;
+	padding: 1rem 3rem 0;
 }
 .disabled{
 	opacity: .5;
@@ -37,6 +37,9 @@
 
 
 @media only screen and (min-width: 800px){
+	.header{
+		padding: 2rem 3rem .5rem;
+	}
 	.header nav{
 		justify-content: space-between;
 	}

@@ -1,13 +1,12 @@
 .logoWrapper{
 	margin: auto;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
 .wordmark{
 	font-size: 2rem;
-	margin-top: .5rem;
 }
 
 @media only screen and (min-width: 800px){
