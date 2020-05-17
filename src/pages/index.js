@@ -16,6 +16,7 @@ export default function Home({ filters }){
 	const[city, setCity] = useState("");
 	const[state, setState] = useState("");
 	const[query, setQuery] = useState("");
+	const[searchFocus, setSearchFocus] = useState(false);
 
 	const router = useRouter();
 
@@ -54,10 +55,19 @@ export default function Home({ filters }){
 		setState(value);
 	};
 
+	const onSearchFocus = () => {
+		setSearchFocus(true);
+	};
+
+	const onSearchBlur = () => {
+		setSearchFocus(false);
+	};
+
 	return(
 		<Layout
 			title="My Tenders"
 			description="Find tenders"
+			searchIsFocused={searchFocus}
 		>
 			<div className={styles.contentWrapper}>
 				<div className={styles.container}>
@@ -122,7 +132,12 @@ export default function Home({ filters }){
 					<div className={styles.line}></div>
 				</div>
 
-				<SearchInput onSubmit={onSearch} onChange={onChangeQuery} />
+				<SearchInput
+					onSubmit={onSearch}
+					onChange={onChangeQuery}
+					onFocus={onSearchFocus}
+					onBlur={onSearchBlur}
+				/>
 			</div>
 		</Layout>
 	);

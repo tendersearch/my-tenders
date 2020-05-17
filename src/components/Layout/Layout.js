@@ -13,7 +13,7 @@ import UserContext from "../../contexts/userContext";
 const Footer = dynamic( () => import("../Footer/Footer") );
 const Header = dynamic( () => import("../Header/Header") );
 
-export default function Layout({ title, description, children }){
+export default function Layout({ title, description, children, searchIsFocused }){
 	const isDesktop = useMediaQuery({
 		query: "(min-width: 800px)"
 	});
@@ -45,7 +45,14 @@ export default function Layout({ title, description, children }){
 				</Head>
 				<Header />
 				<main>{children}</main>
-				{!isDesktop ? <Footer /> : ""}
+				{
+					!isDesktop
+						? (
+							searchIsFocused
+								? ""
+								: <Footer />
+						)
+						: ""}
 			</ApolloProvider>
 		</UserContext.Provider>
 	);
@@ -54,5 +61,6 @@ export default function Layout({ title, description, children }){
 Layout.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
-	children: PropTypes.node
+	children: PropTypes.node,
+	searchIsFocused: PropTypes.bool
 };
