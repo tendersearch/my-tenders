@@ -180,11 +180,13 @@ class Auth extends EventEmitter{
 	}
 
 	async becomeAdmin(){
-		const createAdminUserResult = await client.mutate({ mutation: CREATE_ADMIN_USER });
+		const createAdminUserResult = await client.mutate({
+			mutation: CREATE_ADMIN_USER,
+			fetchPolicy: "no-cache"
+		});
 		const{ data } = createAdminUserResult;
 		const status = data.createAdminUser;
 
-		await this.getUser();
 		return status;
 	}
 }
