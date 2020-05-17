@@ -61,6 +61,7 @@ class Auth extends EventEmitter{
 			});
 
 			this.googleUser = this.google.currentUser.get();
+			this.emit("ready");
 		});
 	}
 
@@ -105,8 +106,16 @@ class Auth extends EventEmitter{
 			return{};
 	}
 
+	async refresh(){
+		const refreshedUser = await this.google.currentUser.get().reloadAuthResponse();
+		this.googleUser = refreshedUser;
+		return refreshedUser;
+	}
+
 	async triggerSignup(){
-		const googleUser = await this.google.signIn();
+		const googleUser = await this.google.signIn({
+			prompt: "select_account"
+		});
 		this.googleUser = googleUser;
 		return this.signIn(googleUser);
 	}
@@ -126,8 +135,8 @@ class Auth extends EventEmitter{
 	}
 
 	async signOut(){
-		const gSignedOut = await this.google.signOut();
-		console.log(gSignedOut);
+		await this.google.signOut();
+		this.google.currentUser.get().disconnect();
 		const fSignedOut = await this.logout();
 		console.log(fSignedOut);
 
@@ -175,6 +184,7 @@ class Auth extends EventEmitter{
 		const{ data } = createAdminUserResult;
 		const status = data.createAdminUser;
 
+		await this.getUser();
 		return status;
 	}
 }

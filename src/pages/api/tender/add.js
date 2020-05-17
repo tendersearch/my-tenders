@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
 	});
 	const role = await getUserRole(db);
 
-	if(role !== "ADMIN") return response(403, "Access denied");
+	if(role !== "ADMIN") return response(401, "Not authorized", res);
 
 	const body = parseBody(req.body);
 	const result = await createTenders(body, db);
@@ -44,8 +44,16 @@ module.exports = async (req, res) => {
 		};
 	});
 	await saveToAlgolia(tenders);
+	await triggerBuildHook();
 
 	response(200, { message: "Tenders saved!" }, res);
+};
+
+const triggerBuildHook = async () => {
+	const response = await fetch(process.env.ADD_TENDER_HOOK, { method: "POST" });
+	const result = await response.json();
+
+	console.log(result);
 };
 
 const getUserRole = async (client) => {

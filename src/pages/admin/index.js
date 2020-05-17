@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { useState, useContext, useEffect } from "react";
+import dynamic from "next/dynamic";
 import PropTypes from "prop-types";
 import auth from "../../util/Auth";
+
+// Semantic ui
+import { Button, Icon, Divider, Loader } from "semantic-ui-react";
+
+// Styles
+import styles from "../../styles/admin.module.css";
 
 // Components
 import Layout from "../../components/Layout/Layout";
 import UserContext from "../../contexts/userContext";
-import AddTendersForm from "../../components/AddTendersForm/AddTendersForm";
-import AddTendersFromSpreadsheet from "../../components/AddTendersFromSpreadsheet/AddTendersFromSpreadsheet";
-
-// Semantic ui
-import { Button, Icon, Divider } from "semantic-ui-react";
-
-// Styles
-import styles from "../../styles/admin.module.css";
+const AddTendersForm = dynamic( () => import("../../components/AddTendersForm/AddTendersForm"));
+const AddTendersFromSpreadsheet = dynamic( () => import("../../components/AddTendersFromSpreadsheet/AddTendersFromSpreadsheet"));
 
 export default function admin(){
 	return(
@@ -26,27 +27,26 @@ export default function admin(){
 }
 
 const Display = () => {
-	const[hasScopes, setHasScopes] = useState(
-		auth.google
-			? auth.google.currentUser.get().hasGrantedScopes(auth.adminScopes)
-			: false);
+	const[hasScopes, setHasScopes] = useState(null);
 	const user = useContext(UserContext);
 
 	useEffect( () => {
-		auth.onReady = () => {
+		auth.on("ready", () => {
 			setHasScopes(auth.google.currentUser.get().hasGrantedScopes(auth.adminScopes));
-		};
+		});
 	});
 
-	return(
-		<>
-			{
-				!user.loggedIn || user.role !== "ADMIN" || !hasScopes
-					? <NotAdmin user={user} />
-					: <Admin />
-			}
-		</>
-	);
+	if(user.loggedIn)
+		if(hasScopes !== null){
+			if(user.role === "ADMIN")
+				return<Admin />;
+			if(user.role !== "ADMIN" || !hasScopes)
+				return<NotAdmin user={user} />;
+		}else{
+			return<Loader active />;
+		}
+	else
+		return<NotAdmin user={user} />;
 };
 
 const NotAdmin = ({ user }) => {

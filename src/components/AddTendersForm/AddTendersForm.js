@@ -1,35 +1,38 @@
 import { useState } from "react";
 import Datetime from "react-datetime";
 import { useForm } from "react-hook-form";
-import auth from "../../util/Auth";
+import { addTenders } from "../../util/admin";
 
 // Semantic ui
-import { Button, Form, Input, Label, Header } from "semantic-ui-react";
+import { Button, Form, Input, Label, Header, Message } from "semantic-ui-react";
 
 const AddTendersForm = () => {
 	const{ register, handleSubmit, errors } = useForm();
 	const[loading, setLoading] = useState(false);
+	const[success, setSuccess] = useState(false);
+	const[error, setError] = useState(false);
+	const[errorMessage, setErrorMessage] = useState("Something went wrong when trying to add the tender. Try again in a while, if it still doesn't work, something is very wrong.");
 
 	const onSubmit = async (data) => {
 		setLoading(true);
-		const response = await fetch("/api/tender/add", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Bearer ${auth.user.secret}`
-			},
-			body: JSON.stringify([
-				data
-			])
-		});
+		const response = await addTenders(data);
 
-		const result = await response.json();
+		if(response.ok){
+			setSuccess(true);
+			setError(false);
+		}else{
+			setError(true);
+			setSuccess(false);
+
+			if(response.status === 401)
+				setErrorMessage("You are not authorized. Your token may have expired, try logging out and back in.");
+		}
+
 		setLoading(false);
-		console.log(result);
 	};
 
 	return(
-		<Form action="/api/tender/add" onSubmit={handleSubmit(onSubmit)}>
+		<Form action="/api/tender/add" onSubmit={handleSubmit(onSubmit)} success={success} error={error}>
 			<Header as="h3">Create single tender</Header>
 
 			{/* Organisation name */}
@@ -136,7 +139,7 @@ const AddTendersForm = () => {
 			{/* Amounts */}
 			<Form.Group widths="equal">
 				<Form.Field fluid>
-					<label>Estimated amount</label>
+					<label>Tender fees</label>
 					<Input label="Rs." >
 						<Label basic>Rs.</Label>
 						<input
@@ -146,7 +149,7 @@ const AddTendersForm = () => {
 								required: "Type an estimated amount",
 								pattern: {
 									value: /[0-9]/,
-									message: "Must only contain numbers"
+									message: "Must only contain numbers. This is formatted when displayed."
 								}
 							})}
 						/>
@@ -165,7 +168,7 @@ const AddTendersForm = () => {
 								required: "Type a EMD amount",
 								pattern: {
 									value: /[0-9]/,
-									message: "Must only contain numbers"
+									message: "Must only contain numbers. This is formatted when displayed."
 								}
 							})}
 						/>
@@ -176,16 +179,28 @@ const AddTendersForm = () => {
 
 			{/* Name of work textarea */}
 			<Form.Field>
-				<label>Name of work</label>
+				<label>Work description</label>
 				<textarea
 					placeholder="M/O OF Electrical and Mechanical Installations, AC, water coolers and sliding gate on air side at Integrated Air Cargo Complex at Chennai Airport, Chennai"
 					name="description"
 					ref={register({
-						required: "Type the name of work"
+						required: "Type a work description"
 					})}
 				></textarea>
 				<InputError name="description" errors={errors} />
 			</Form.Field>
+
+			<Message
+				success
+				header="Tender added"
+				content="You tender was successfully added."
+			/>
+
+			<Message
+				error
+				header="Could not add tender"
+				content={errorMessage}
+			/>
 
 			<Button loading={loading} primary>Add</Button>
 		</Form>

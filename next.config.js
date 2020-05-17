@@ -31,7 +31,7 @@ module.exports = withPlugins(
 		],
 		[
 			withPurgeCss, {
-				purgeCssEnabled: () => isEnvProduction,
+				purgeCssEnabled: ({ dev, isServer }) => (!dev && !isServer),
 				purgeCss: {
 					whitelistPatterns: () => [
 						/(html|body|before|after|root|not|a|p|i|span|h1|h2|h3|h4|h5|h6)/,
@@ -67,12 +67,14 @@ module.exports = withPlugins(
 			const newRules = [
 				...startRules
 			];
-			config.plugins = config.plugins || [];
-			config.plugins.push(new OptimizeCSSAssetsPlugin({
-				cssProcessorPluginOptions: {
-					preset: ["default", { discardComments: { removeAll: true } }]
-				}
-			}));
+			if(isEnvProduction){
+				config.plugins = config.plugins || [];
+				config.plugins.push(new OptimizeCSSAssetsPlugin({
+					cssProcessorPluginOptions: {
+						preset: ["default", { discardComments: { removeAll: true } }]
+					}
+				}));
+			}
 
 			config.module.rules = newRules;
 			return config;
