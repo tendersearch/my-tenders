@@ -125,7 +125,7 @@ function SavedTenders(){
 					closeOnEscape
 					onClose={ () => { setShowPrompt(false); }}
 				>
-					<Modal.Header>Add MyTenders to your homescreen</Modal.Header>
+					<Modal.Header>Add Tendersearch.in to your homescreen</Modal.Header>
 					<Modal.Content>
 						<p>It looks like your getting use out of our app, do you wanna add to your homescreen?</p>
 						<Button primary onClick={onInstall}>Add to homescreen</Button>
