@@ -97,3 +97,16 @@ export function parseSpreadsheet(rows){
 			};
 		});
 }
+
+export async function removeTenders(arr){
+	const response = await fetch("/api/tender/remove", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${auth.user.secret}`
+		},
+		body: JSON.stringify(arr)
+	});
+
+	return response;
+}

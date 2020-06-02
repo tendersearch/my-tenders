@@ -1,0 +1,65 @@
+.container{
+	width: inherit;
+	/* max-width: 600px; */
+	margin: auto;
+}
+.search{
+	margin-top: 1rem;
+	padding: 0;
+}
+.result{
+	padding: 2rem 0;
+	border-bottom: 1px solid var(--grey);
+}
+.row{
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+.row.between{
+	justify-content: space-between;
+}
+.column{
+	display: flex;
+	flex-direction: column;
+}
+.value{
+	font-weight: bold;
+}
+.name{
+	margin-left: 10px;
+	font-weight: bold;
+}
+.loader{
+	position: fixed !important;
+}
+.description{
+	width: 100%;
+	font-size: .9rem;
+	font-weight: 200;
+	margin-top: 5px;
+}
+
+.deleteButton{
+	position: sticky;
+	display: block;
+	bottom: 5px;
+	width: 100%;
+	max-width: 250px;
+	cursor: pointer;
+
+	font-weight: bold;
+	font-size: 1.2rem;
+	margin: 30px auto 0;
+	border: 1px solid var(--red);
+	border-radius: 3px;
+	color: var(--red);
+	background: var(--secondary);
+	padding: .7rem 1rem;
+}
+
+@media only screen and (max-width: 800px){
+	.deleteButton{
+		bottom: 65px;
+	}
+}

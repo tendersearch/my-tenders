@@ -1,17 +1,9 @@
 const response = require("../../../util/api/response").default;
 const algoliasearch = require("algoliasearch");
-const gql = require("graphql-tag");
 const ApolloClient = require("apollo-boost").default;
 const faunadb = require("faunadb");
+const getUserRole = require("../../../util/api/getUserRole");
 require("isomorphic-fetch");
-
-const CURRENT_USER = gql`
-query{
-	currentUser{
-		role
-	}
-}
-`;
 
 module.exports = async (req, res) => {
 	if(req.method !== "POST") return response(404, "Endpoint not found", res);
@@ -54,13 +46,6 @@ const triggerBuildHook = async () => {
 	const result = await response.json();
 
 	console.log(result);
-};
-
-const getUserRole = async (client) => {
-	const result = await client.query({ query: CURRENT_USER });
-	const role = result.data.currentUser.role;
-
-	return role;
 };
 
 const createTenders = async (data) => {

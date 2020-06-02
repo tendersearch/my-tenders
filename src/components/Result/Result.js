@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import auth from "../../util/Auth";
+import { parseDate, parseNumber } from "../../util/result";
 
 // Semantic ui
 import { Icon } from "semantic-ui-react";
@@ -172,18 +172,6 @@ function SaveTender({ onClick, isSaved }){
 			<span>{isSaved ? "saved" : "save"}</span>
 		</button>
 	);
-}
-
-function parseDate(date){
-	let dateStr = date;
-
-	if(typeof date === "object") dateStr = date["@ts"];
-
-	return moment(dateStr).format("DD-MMM-YYYY hh:mm A");
-}
-
-function parseNumber(numStr){
-	return new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(numStr);
 }
 
 Result.propTypes = {

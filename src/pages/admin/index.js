@@ -15,6 +15,7 @@ import Layout from "../../components/Layout/Layout";
 import UserContext from "../../contexts/userContext";
 const AddTendersForm = dynamic( () => import("../../components/AddTendersForm/AddTendersForm"));
 const AddTendersFromSpreadsheet = dynamic( () => import("../../components/AddTendersFromSpreadsheet/AddTendersFromSpreadsheet"));
+const RemoveTenders = dynamic( () => import("../../components/RemoveTenders/RemoveTenders"));
 
 export default function admin(){
 	return(
@@ -100,11 +101,15 @@ const Admin = () => {
 	return(
 		<div className={styles.container}>
 			<h1>Admin panel</h1>
-			<section className={styles.loggedIn}>
+			<section>
 				<h2>Add Tenders</h2>
 				<AddTendersFromSpreadsheet className={styles.tendersFromSheet} />
 				<Divider horizontal style={{ margin: "50px 0" }}>OR</Divider>
 				<AddTendersForm />
+			</section>
+			<section>
+				<h2>Remove tenders</h2>
+				<RemoveTenders />
 			</section>
 
 		</div>

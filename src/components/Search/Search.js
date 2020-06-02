@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 // Semantic ui
 import { Input, Icon } from "semantic-ui-react";
@@ -9,7 +10,7 @@ import AlgoliaImage from "../../images/algolia.png";
 // Styles
 import styles from "./search.module.css";
 
-export default function SearchInput({ onSubmit, onChange, onFocus, onBlur, defaultValue = "" }){
+export default function SearchInput({ onSubmit, onChange, onFocus, onBlur, defaultValue = "", className = "" }){
 	const handleSubmit = (e) => {
 		const value = e.target.value;
 
@@ -26,7 +27,7 @@ export default function SearchInput({ onSubmit, onChange, onFocus, onBlur, defau
 	};
 
 	return(
-		<div className={styles.search}>
+		<div className={classNames(styles.search, className)}>
 			<Input fluid icon placeholder="search..." onKeyUp={handleSubmit} onChange={handleChange}>
 				<input
 					defaultValue={defaultValue}
@@ -48,5 +49,6 @@ SearchInput.propTypes = {
 	onChange: PropTypes.func,
 	defaultValue: PropTypes.string,
 	onFocus: PropTypes.func,
-	onBlur: PropTypes.func
+	onBlur: PropTypes.func,
+	className: PropTypes.string
 };
