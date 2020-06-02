@@ -14,3 +14,9 @@
 	flex-direction: inherit;
 	align-items: inherit;
 }
+.info{
+	margin-bottom: 45px;
+}
+.error{
+	text-align: center;
+}

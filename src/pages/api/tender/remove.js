@@ -48,7 +48,20 @@ async function removeFromDB(ids){
 		q.Foreach(ids,
 			q.Lambda(
 				"id",
-				q.Delete( q.Ref(q.Collection("Tender"), q.Var("id")) )
+				q.Do(
+					q.Foreach(
+						q.Paginate(
+							q.Match(
+								q.Index("findSavedTender"),
+								q.Ref(q.Collection("Tender"), q.Var("id"))
+							)
+						),
+						q.Lambda(
+							"ref", q.Delete(q.Var("ref"))
+						)
+					),
+					q.Delete( q.Ref(q.Collection("Tender"), q.Var("id")) )
+				)
 			)
 		)
 	);

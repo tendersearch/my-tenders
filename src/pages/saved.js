@@ -92,21 +92,23 @@ function SavedTenders(){
 
 	if(error)
 		return(
-			<div className={error}>
+			<div className={styles.error}>
 				An error occured when trying to load your tenders.
 			</div>
 		);
 
 	if(tenders.length === 0)
 		return(
-			<div className={error}>
-				You do not have any saved tenders
+			<div className={styles.error}>
+				You do not have any saved tenders. <br /> <br />
+				If you have saved tenders in the past, this probably means that they have been completely remove from the site. Sorry about that :(
 			</div>
 		);
 
 	if(tenders.length > 0)
 		return(
 			<div className={styles.tenders}>
+				<p className={styles.info}>If you can&apos;t see a tender that you&apos;ve previously saved, it has probably been removed from the site.</p>
 				{
 					tenders.map( tender => (
 						<Result

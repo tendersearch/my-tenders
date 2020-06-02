@@ -121,17 +121,21 @@ class Auth extends EventEmitter{
 	}
 
 	async getUser(){
-		const secret = Cookie.get("secret");
-		if(!secret) return{ loggedIn: false };
+		try{
+			const secret = Cookie.get("secret");
+			if(!secret) return{ loggedIn: false };
 
-		const currentUserResult = await client.query({ query: CURRENT_USER });
-		const{ data } = currentUserResult;
-		const currentUser = data ? data.currentUser : {};
-		currentUser.loggedIn = !!secret;
-		currentUser.secret = secret;
+			const currentUserResult = await client.query({ query: CURRENT_USER });
+			const{ data } = currentUserResult;
+			const currentUser = data ? data.currentUser : {};
+			currentUser.loggedIn = !!secret;
+			currentUser.secret = secret;
 
-		this.user = currentUser || { loggedIn: false };
-		return currentUser;
+			this.user = currentUser || { loggedIn: false };
+			return currentUser;
+		}catch(err){
+			console.error(err);
+		}
 	}
 
 	async signOut(){
