@@ -65,7 +65,7 @@ export default function Home({ filters }){
 
 	return(
 		<Layout
-			title="My Tenders"
+			title="Tendersearch"
 			description="Find tenders"
 			searchIsFocused={searchFocus}
 		>
