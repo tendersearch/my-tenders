@@ -20,9 +20,6 @@ export default function Layout({ title, description, children, searchIsFocused }
 	const{ prompt, promptToInstall } = useContext(PWAContext);
 	const[showPrompt, setShowPrompt] = useState(prompt !== null && hide !== "true");
 
-	console.log(prompt);
-	console.log(hide);
-
 	const isDesktop = useMediaQuery({
 		query: "(min-width: 800px)"
 	});
