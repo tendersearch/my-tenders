@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -9,11 +9,20 @@ import PropTypes from "prop-types";
 
 // Context
 import UserContext from "../../contexts/userContext";
+import PWAContext from "../../contexts/pwaContext";
 
+const PWAPrompt = dynamic( () => import("../PWAPrompt/PWAPrompt") );
 const Footer = dynamic( () => import("../Footer/Footer") );
 const Header = dynamic( () => import("../Header/Header") );
 
 export default function Layout({ title, description, children, searchIsFocused }){
+	const hide = typeof window !== "undefined" ? (sessionStorage.getItem("hidePrompt") || "false") : "false";
+	const{ prompt, promptToInstall } = useContext(PWAContext);
+	const[showPrompt, setShowPrompt] = useState(prompt !== null && hide !== "true");
+
+	console.log(prompt);
+	console.log(hide);
+
 	const isDesktop = useMediaQuery({
 		query: "(min-width: 800px)"
 	});
@@ -21,9 +30,18 @@ export default function Layout({ title, description, children, searchIsFocused }
 	const[user, setUser] = useState(auth.user);
 	const themeColor = "#364aa2";
 
+	const onClose = e => {
+		sessionStorage.setItem("hidePrompt", true);
+		setShowPrompt(false);
+	};
+
 	useEffect( () => {
 		auth.once("user_change", setUser);
 	});
+
+	useEffect( () => {
+		setShowPrompt(prompt !== null && hide !== "true");
+	}, [prompt]);
 
 	return(
 		<UserContext.Provider value={user}>
@@ -44,7 +62,15 @@ export default function Layout({ title, description, children, searchIsFocused }
 					<link rel="preconnect" href="https://ssl.gstatic.com" />
 				</Head>
 				<Header />
-				<main>{children}</main>
+				<main>
+					{children}
+
+					{
+						showPrompt
+							? <PWAPrompt onInstall={promptToInstall} onClose={onClose} />
+							: null
+					}
+				</main>
 				{
 					!isDesktop
 						? searchIsFocused ? "" : <Footer />

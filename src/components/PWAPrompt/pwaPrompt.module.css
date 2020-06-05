@@ -1,0 +1,53 @@
+.container{
+	width: 100%;
+	position: fixed;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	z-index: 1005;
+}
+.inner{
+	box-sizing: border-box;
+	padding: 1rem;
+	max-width: 400px;
+	margin: auto;
+
+	background: var(--background);
+	box-shadow: 0 -3px 8px var(--shadow);
+}
+.row{
+	display: flex;
+	flex-direction: row;
+}
+.logo{
+	width: 46px;
+	height: 46px;
+}
+.close{
+	display: block !important;
+	margin-left: auto !important;
+
+	cursor: pointer;
+}
+.info{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+
+	margin-left: 10px;
+}
+.info .heading{
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.buttonRow{
+	margin-top: 1rem;
+	justify-content: flex-end;
+}
+.install{
+	text-transform: uppercase;
+}
