@@ -15,7 +15,9 @@ const AddTendersForm = () => {
 
 	const onSubmit = async (data) => {
 		setLoading(true);
-		const response = await addTenders(data);
+
+		// Data needs to be an array.
+		const response = await addTenders([data]);
 
 		if(response.ok){
 			setSuccess(true);
