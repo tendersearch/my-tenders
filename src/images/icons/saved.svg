@@ -1,3 +1,5 @@
-<svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 14L16 15V0H4V2H14V14ZM12 3H0V18L6 16L12 18V3Z" fill="#052684"/>
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<path d="M20.6666 0H7.33329C5.86663 0 4.67996 1.2 4.67996 2.66667L4.66663 24L14 20L23.3333 24V2.66667C23.3333 1.2 22.1333 0 20.6666 0Z" fill="#4169E1" fill-opacity="0.5"/>
+</g>
 </svg>

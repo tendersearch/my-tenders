@@ -9,7 +9,7 @@ import styles from "./footer.module.css";
 // Icons
 import SvgProfile from "../../images/icons/profile.svg";
 import SvgHome from "../../images/icons/home.svg";
-import SvgSaved from "../../images/icons/saved.svg";
+import SvgSaved from "../../images/icons/saved2.svg";
 
 function Footer(){
 	return(
