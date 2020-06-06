@@ -76,6 +76,10 @@ function Results({ results }){
 					openingDate={result.openingDate}
 					url={result.url}
 					id={result.objectID}
+					highlights={[
+						...result._highlightResult.name.matchedWords,
+						...result._highlightResult.description.matchedWords
+					]}
 				/>
 			))}
 
@@ -97,8 +101,6 @@ function buildFilter(obj){
 	}).join(" AND ");
 
 	if(keys.length > 0) filter += ` AND (${addFilter})`;
-
-	console.log(filter);
 
 	return filter;
 }

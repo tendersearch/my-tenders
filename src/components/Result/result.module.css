@@ -10,6 +10,9 @@
 	display: flex;
 	flex-direction: column;
 }
+.highlight{
+	font-weight: bold;
+}
 .save{
 	display: flex;
 	flex-direction: column;

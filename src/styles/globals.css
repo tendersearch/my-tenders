@@ -5,6 +5,7 @@
 	--grey: #777777;
 	--white: #fff;
 	--accent: #4169E1;
+	--accentOpaque: rgba(65, 105, 225, .15);
 	--red: #FF0000;
 
 	--shadow: rgba(40, 40, 40, .2);

@@ -57,7 +57,7 @@ mutation($tenderId: [ID], $userId: ID!){
 `;
 
 export default function Result({ name, city, state, description,
-	endDate, openingDate, estAmount, emd, id, url, fromSaved = false }){
+	endDate, openingDate, estAmount, emd, id, url, fromSaved = false, highlights = [] }){
 	const userContext = useContext(UserContext);
 	const[user, setUser] = useState(userContext);
 	const[saveTender] = useMutation(SAVE_TENDER);
@@ -118,14 +118,16 @@ export default function Result({ name, city, state, description,
 					: <SaveTender onClick={onSaveTender} isSaved={isSaved} />
 			}
 			<div className={styles.nameAndLocation}>
-				<a target="_blank" rel="noopener noreferrer" href={url} className={styles.name}>{name}</a>
+				<a target="_blank" rel="noopener noreferrer" href={url} className={styles.name}>
+					{highlight(name, highlights)}
+				</a>
 				<div className={styles.location}>
 					<LocationIcon className={styles.icon} />
 					<span className={styles.text}>{city}, {state}.</span>
 				</div>
 			</div>
 			<p className={styles.description}>
-				{description}
+				{highlight(description, highlights)}
 			</p>
 			<div className={styles.meta}>
 				<div className={classNames(styles.endDate, styles.metaInfo)}>
@@ -180,6 +182,28 @@ function SaveTender({ onClick, isSaved }){
 	);
 }
 
+function highlight(str, highlights){
+	const uniqueHighlights = [...new Set(highlights)].map( h => h.toLowerCase());
+	const words = str.split(" ");
+
+	const highlighted = <>
+		{words.map( word => {
+			const isHighlighted = !!uniqueHighlights.find( highlight => {
+				return new RegExp(`^.*${highlight}.*$`, "ig").test(word);
+			});
+
+			if(isHighlighted)
+				return(
+					<span className={styles.highlight} key={Math.random()}>{word + " "}</span>
+				);
+
+			return word + " ";
+		})}
+	</>;
+
+	return highlighted;
+}
+
 Result.propTypes = {
 	name: PropTypes.string,
 	city: PropTypes.string,
@@ -191,7 +215,8 @@ Result.propTypes = {
 	emd: PropTypes.number,
 	id: PropTypes.string,
 	fromSaved: PropTypes.bool,
-	url: PropTypes.string
+	url: PropTypes.string,
+	highlights: PropTypes.array
 };
 
 RemoveTender.propTypes = {
