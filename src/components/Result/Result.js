@@ -18,6 +18,7 @@ import styles from "./result.module.css";
 // Icons
 import LocationIcon from "../../images/icons/location.svg";
 import SaveIcon from "../../images/icons/saved.svg";
+import LinkIcon from "../../images/icons/link.svg";
 
 const SAVE_TENDER = gql`
 mutation($tenderId: [ID], $userId: ID!){
@@ -144,6 +145,11 @@ export default function Result({ name, city, state, description,
 					<span className={styles.value}>Rs. {parseNumber(emd)}</span>
 				</div>
 			</div>
+
+			<a className={styles.website} target="_blank" rel="noopener noreferrer" href={url}>
+				<span className={styles.text}>Website</span>
+				<LinkIcon className={styles.icon} />
+			</a>
 		</div>
 	);
 }
