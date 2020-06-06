@@ -15,8 +15,8 @@ module.exports = withPlugins(
 			withPWA, {
 				pwa: {
 					dest: "public",
-					disable: !isEnvProduction,
-					register: isEnvProduction
+					disable: false/* !isEnvProduction */,
+					register: true/* isEnvProduction */
 				}
 			}
 		],

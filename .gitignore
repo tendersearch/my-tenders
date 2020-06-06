@@ -31,5 +31,5 @@ yarn-error.log*
 .env.production.local
 
 # Service worker
-public/sw.js
+public/sw.js*
 public/workbox*

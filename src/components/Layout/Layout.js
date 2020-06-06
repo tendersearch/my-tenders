@@ -18,7 +18,7 @@ const Header = dynamic( () => import("../Header/Header") );
 export default function Layout({ title, description, children, searchIsFocused }){
 	const hide = typeof window !== "undefined" ? (sessionStorage.getItem("hidePrompt") || "false") : "false";
 	const{ prompt, promptToInstall } = useContext(PWAContext);
-	const[showPrompt, setShowPrompt] = useState(prompt !== null && hide !== "true");
+	const[showPrompt, setShowPrompt] = useState(prompt !== null && hide === "false");
 
 	const isDesktop = useMediaQuery({
 		query: "(min-width: 800px)"
@@ -26,6 +26,20 @@ export default function Layout({ title, description, children, searchIsFocused }
 
 	const[user, setUser] = useState(auth.user);
 	const themeColor = "#364aa2";
+
+	const handleInstall = async e => {
+		// Show the native install prompt.
+		promptToInstall();
+
+		// Get the user's choice.
+		const userChoice = await prompt.userChoice;
+
+		// If user canceled install, don't do anything.
+		if(userChoice.outcome === "dismissed") return;
+
+		// If user installed the PWA, hide the prompt.
+		sessionStorage.setItem("hidePrompt", "true");
+	};
 
 	const onClose = e => {
 		sessionStorage.setItem("hidePrompt", true);
@@ -77,7 +91,7 @@ export default function Layout({ title, description, children, searchIsFocused }
 
 					{
 						showPrompt
-							? <PWAPrompt onInstall={promptToInstall} onClose={onClose} />
+							? <PWAPrompt onInstall={handleInstall} onClose={onClose} />
 							: null
 					}
 				</main>
