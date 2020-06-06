@@ -127,9 +127,7 @@ export default function Home({ filters }){
 				</div>
 
 				<div className={styles.divider}>
-					<div className={styles.line}></div>
 					<span className={styles.text}>OR</span>
-					<div className={styles.line}></div>
 				</div>
 
 				<SearchInput
