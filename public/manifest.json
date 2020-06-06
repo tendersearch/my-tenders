@@ -2,7 +2,7 @@
 	"name": "Tendersearch.in",
 	"short_name": "Tendersearch",
 	"theme_color": "#364aa2",
-	"background_color": "#364aa2",
+	"background_color": "#ffffff",
 	"display": "standalone",
 	"Scope": "/",
 	"start_url": "/",
@@ -47,6 +47,5 @@
 		"sizes": "512x512",
 		"type": "image/png"
 	  }
-	],
-	"splash_pages": null
+	]
   }
