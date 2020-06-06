@@ -11,7 +11,7 @@
 .inner{
 	box-sizing: border-box;
 	padding: 1rem;
-	max-width: 400px;
+	max-width: 600px;
 	margin: auto;
 
 	background: var(--background);

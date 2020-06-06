@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 
 // Styles
 import "typeface-lexend-deca";
-import "typeface-poppins";
 
 // Semantic ui
 import "semantic-ui-css/semantic.css";

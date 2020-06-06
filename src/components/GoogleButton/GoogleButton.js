@@ -6,7 +6,7 @@ import GoogleIcon from "../../images/icons/google.svg";
 // Styles
 import styles from "./googleButton.module.css";
 
-function GoogleButton({ onClick, text = "Log in", loading = false }){
+function GoogleButton({ onClick, text = "Sign in with Google", loading = false }){
 	return(
 		<button className={styles.button} onClick={onClick} disabled={loading}>
 			{

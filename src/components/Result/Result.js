@@ -176,7 +176,7 @@ function SaveTender({ onClick, isSaved }){
 
 	return(
 		<button className={classes} onClick={onClick}>
-			<SaveIcon />
+			<SaveIcon className={styles.saveIcon} />
 			<span>{isSaved ? "saved" : "save"}</span>
 		</button>
 	);

@@ -1,7 +1,7 @@
 .result{
 	width: 100%;
 	max-width: 600px;
-	padding: 1rem 1rem 1.5rem;
+	padding: 1rem 1rem 1rem;
 	position: relative;
 
 	box-shadow: 0 3px 10px var(--shadow);
@@ -27,6 +27,10 @@
 
 	font-size: .8rem;
 	color: var(--primary);
+}
+.saveIcon{
+	width: 44px;
+	height: 44px;
 }
 .isSaved{
 	opacity: .5;
@@ -100,7 +104,7 @@
 .metaInfo .value{
 	margin-top: 3px;
 	font-weight: 600;
-	font-size: .7rem;
+	font-size: .9rem;
 	color: #000;
 	flex-shrink: 2;
 }
@@ -119,21 +123,25 @@
 
 	width: 50%;
 	min-width: 200px;
+	max-width: 250px;
 	margin: auto;
 
-	font-size: 1.1rem;
+	font-size: 1rem;
 
-	transform: translateY(40px);
+	transform: translateY(35px);
 	cursor: pointer;
 
 	text-align: center;
+}
+.website:hover{
+	color: var(--secondary);
 }
 .website .text{
 	margin-right: 10px;
 	vertical-align: middle;
 }
 .website .icon{
-	height: 22px;
-	width: 22px;
+	height: 20px;
+	width: 20px;
 	vertical-align: middle;
 }
