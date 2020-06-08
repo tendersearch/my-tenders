@@ -156,6 +156,10 @@ export async function getStaticProps(context){
 		}
 	);
 
+	Object.keys(result).forEach(key => {
+		delete result[key].after;
+	});
+
 	return{
 		props: { filters: result }
 	};
