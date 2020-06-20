@@ -13,6 +13,8 @@ import styles from "../../styles/admin.module.css";
 // Components
 import Layout from "../../components/Layout/Layout";
 import UserContext from "../../contexts/userContext";
+
+const ClearTenders = dynamic( () => import("../../components/ClearTenders/ClearTenders"));
 const AddTendersForm = dynamic( () => import("../../components/AddTendersForm/AddTendersForm"));
 const AddTendersFromSpreadsheet = dynamic( () => import("../../components/AddTendersFromSpreadsheet/AddTendersFromSpreadsheet"));
 const RemoveTenders = dynamic( () => import("../../components/RemoveTenders/RemoveTenders"));
@@ -110,6 +112,10 @@ const Admin = () => {
 			<section>
 				<h2>Remove tenders</h2>
 				<RemoveTenders />
+			</section>
+			<section>
+				<h2>Clear tenders</h2>
+				<ClearTenders />
 			</section>
 
 		</div>

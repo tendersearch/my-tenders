@@ -1,6 +1,18 @@
 import moment from "moment";
 import auth from "./Auth";
 
+export async function clearTenders(){
+	const response = await fetch("/api/tender/clear", {
+		method: "DELETE",
+		headers: {
+			"Authorization": `Bearer ${auth.user.secret}`
+		},
+		mode: "cors"
+	});
+
+	return response.ok;
+}
+
 export async function listSpreadsheets(user, { refreshed = false } = {}){
 	const response = await fetch("https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.spreadsheet'", {
 		headers: {
