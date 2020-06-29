@@ -8,9 +8,10 @@ const client = new ApolloClient({
 	uri: "https://graphql.fauna.com/graphql",
 	fetch,
 	request: operation => {
+		const secret = Cookie.get("secret");
 		operation.setContext({
 			headers: {
-				"Authorization": `Bearer ${Cookie.get("secret") ? Cookie.get("secret") : GUEST_KEY}`,
+				"Authorization": `Bearer ${secret || GUEST_KEY}`,
 				"X-Schema-Preview": "partial-update-mutation"
 			}
 		});
