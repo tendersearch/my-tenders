@@ -72,7 +72,7 @@ module.exports = withPlugins(
 			ALGOLIA_APP_ID: process.env.ALGOLIA_APP_ID,
 			ALGOLIA_SEARCH_KEY: process.env.ALGOLIA_SEARCH_KEY
 		},
-		webpack(config){
+		webpack(config, { dev }){
 			config.entry.vendor = [];
 			config.entry.vendor.push("semantic-ui-react");
 
@@ -88,6 +88,9 @@ module.exports = withPlugins(
 					}
 				}));
 			}
+
+			if(dev)
+				config.devtool = "cheap-module-source-map";
 
 			config.module.rules = newRules;
 			return config;
