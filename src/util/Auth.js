@@ -172,7 +172,9 @@ class Auth extends EventEmitter{
 		if(result.secret) Cookie.set("secret", result.secret);
 		else throw new Error("Could not login");
 
-		return this.getUser();
+		const user = await this.getUser();
+		this.user = user;
+		return user;
 	}
 
 	async logout(){
