@@ -34,14 +34,22 @@ async function clearTendersFromDB(){
 	const q = faunadb.query;
 
 	await client.query(
-		q.Map(
-			q.Paginate(
-				q.Documents(q.Collection("Tender")),
-				{ size: 100000 }
+		q.Do(
+			q.Map(
+				q.Paginate(
+					q.Documents(q.Collection("Tender")),
+					{ size: 100000 }
+				),
+				q.Lambda(
+					"item",
+					q.Delete(q.Var("item"))
+				)
 			),
-			q.Lambda(
-				"item",
-				q.Delete(q.Var("item"))
+			q.Foreach(
+				q.Paginate(q.Documents(q.Collection("tender_savedBy")), { size: 100000 }),
+				q.Lambda("ref",
+					q.Delete(q.Var("ref"))
+				)
 			)
 		)
 	);
