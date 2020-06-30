@@ -28,7 +28,7 @@ export default function SearchInput({ onSubmit, onChange, onFocus, onBlur, defau
 
 	return(
 		<div className={classNames(styles.search, className)}>
-			<Input fluid icon placeholder="search..." onKeyUp={handleSubmit} onChange={handleChange}>
+			<Input fluid icon placeholder="Enter keyword ex- road,mask,solar,garden, etc. " onKeyUp={handleSubmit} onChange={handleChange}>
 				<input
 					defaultValue={defaultValue}
 					onFocus={onFocus}
