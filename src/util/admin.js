@@ -52,14 +52,25 @@ export async function fetchSpreadsheet(user, id, { refreshed = false } = {}){
 }
 
 export async function addTenders(sheetData){
-	const response = await fetch("/api/tender/add", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${auth.user.secret}`
-		},
-		body: JSON.stringify(sheetData)
-	});
+	let response,
+		i = 0;
+	const chunks = chunkArray(sheetData, 150);
+
+	for(const chunk of chunks){
+		console.log(chunk);
+		response = await fetch("/api/tender/add", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${auth.user.secret}`,
+				"x-trigger-build": i === chunks.length - 1 ? "build" : ""
+			},
+			body: JSON.stringify(chunk)
+		});
+
+		i++;
+		if(response.status !== 200) break;
+	}
 
 	return response;
 }
@@ -121,4 +132,29 @@ export async function removeTenders(arr){
 	});
 
 	return response;
+}
+
+/**
+ * Divide an array into equally large chunks
+ * @param {Any[]} arr - The array to divide into chunks
+ * @param {Number} chunkLength - The maximum length of each chunk
+ * @returns {Array[]} An array containing the chunks
+ */
+export function chunkArray(arr, chunkLength){
+	let result = [],
+		pos = 0,
+		i = 0;
+
+	const length = arr.length;
+	const numChunks = Math.ceil(length / chunkLength);
+
+	while(i < numChunks){
+		const chunk = arr.slice(pos, pos + chunkLength);
+		result.push(chunk);
+
+		pos += chunkLength;
+		i++;
+	}
+
+	return result;
 }

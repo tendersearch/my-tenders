@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
 
 	if(role !== "ADMIN") return response(401, "Not authorized", res);
 
+	const shouldBuild = req.headers["x-trigger-build"];
 	const body = parseBody(req.body);
 	const result = await createTenders(body, db);
 
@@ -36,7 +37,9 @@ module.exports = async (req, res) => {
 		};
 	});
 	await saveToAlgolia(tenders);
-	await triggerBuildHook();
+
+	if(shouldBuild === "build")
+		await triggerBuildHook();
 
 	response(200, { message: "Tenders saved!" }, res);
 };
