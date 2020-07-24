@@ -149,10 +149,10 @@ export async function getStaticProps(context){
 
 	const result = await client.query(
 		{
-			cities: q.Paginate(q.Distinct(q.Match(q.Index("allTenderCity")))),
-			departments: q.Paginate(q.Distinct(q.Match(q.Index("allTenderDepartment")))),
-			states: q.Paginate(q.Distinct(q.Match(q.Index("allTenderState")))),
-			organisations: q.Paginate(q.Distinct(q.Match(q.Index("allTenderName"))))
+			cities: q.Paginate(q.Distinct(q.Match(q.Index("allTenderCity"))), { size: 100000 }),
+			departments: q.Paginate(q.Distinct(q.Match(q.Index("allTenderDepartment"))), { size: 100000 }),
+			states: q.Paginate(q.Distinct(q.Match(q.Index("allTenderState"))), { size: 100000 }),
+			organisations: q.Paginate(q.Distinct(q.Match(q.Index("allTenderName"))), { size: 100000 })
 		}
 	);
 
