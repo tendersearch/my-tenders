@@ -30,6 +30,8 @@ export default function Search(){
 				filters: decodeURIComponent(buildFilter({ department: dep, name: org, city, state }))
 			});
 
+			console.log(search);
+
 			setResults(search.hits);
 			setLoading(false);
 		};

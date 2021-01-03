@@ -36,7 +36,8 @@ module.exports = async (req, res) => {
 			end_timestamp: new Date(endDate).getTime()
 		};
 	});
-	await saveToAlgolia(tenders);
+	const algoliaResult = await saveToAlgolia(tenders);
+	console.log(algoliaResult);
 
 	if(shouldBuild === "build")
 		await triggerBuildHook();
@@ -44,14 +45,14 @@ module.exports = async (req, res) => {
 	response(200, { message: "Tenders saved!" }, res);
 };
 
-const triggerBuildHook = async () => {
+async function triggerBuildHook(){
 	const response = await fetch(process.env.ADD_TENDER_HOOK, { method: "POST" });
 	const result = await response.json();
 
 	console.log(result);
 };
 
-const createTenders = async (data) => {
+async function createTenders(data){
 	const client = new faunadb.Client({
 		secret: process.env.FAUNADB_SERVER_KEY
 	});
@@ -93,7 +94,7 @@ const createTenders = async (data) => {
 	return result;
 };
 
-const parseBody = (input) => {
+function parseBody(input){
 	return input.map( tender => {
 		return{
 			...tender,
@@ -105,7 +106,7 @@ const parseBody = (input) => {
 	});
 };
 
-const saveToAlgolia = async (objects) => {
+async function saveToAlgolia(objects){
 	try{
 		const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
 		const index = client.initIndex("tender");

@@ -16,7 +16,7 @@ export async function clearTenders(){
 export async function listSpreadsheets(user, { refreshed = false } = {}){
 	const response = await fetch("https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.spreadsheet'", {
 		headers: {
-			"Authorization": `Bearer ${user.tc.access_token}`
+			"Authorization": `Bearer ${user.xc.access_token}`
 		},
 		mode: "cors"
 	});
@@ -35,7 +35,7 @@ export async function listSpreadsheets(user, { refreshed = false } = {}){
 export async function fetchSpreadsheet(user, id, { refreshed = false } = {}){
 	const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/A1:J10000`, {
 		headers: {
-			"Authorization": `Bearer ${user.tc.access_token}`
+			"Authorization": `Bearer ${user.xc.access_token}`
 		},
 		mode: "cors"
 	});
@@ -54,7 +54,7 @@ export async function fetchSpreadsheet(user, id, { refreshed = false } = {}){
 export async function addTenders(sheetData){
 	let response,
 		i = 0;
-	const chunks = chunkArray(sheetData, 150);
+	const chunks = chunkArray(sheetData, 300);
 
 	for(const chunk of chunks){
 		console.log(chunk);

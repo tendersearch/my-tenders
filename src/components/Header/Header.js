@@ -24,7 +24,8 @@ export default function Header(){
 
 	const onLogin = async () => {
 		setLoggingIn(true);
-		const user = await auth.triggerSignup().catch( () => {
+		const user = await auth.triggerSignup().catch( (err) => {
+			console.error(err);
 			setLoggingIn(false);
 
 			return false;

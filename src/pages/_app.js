@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import Head from "next/head";
 
 // Styles
 import "typeface-lexend-deca";
@@ -18,6 +19,9 @@ function CustomApp({ Component, pageProps }){
 
 	return(
 		<PWAContext.Provider value={ { prompt, promptToInstall } }>
+			<Head>
+				<script src="https://apis.google.com/js/api.js"></script>
+			</Head>
 			<Component {...pageProps} />
 		</PWAContext.Provider>
 	);

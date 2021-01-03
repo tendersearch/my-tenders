@@ -2,7 +2,6 @@ import client from "./client";
 import gql from "graphql-tag";
 import Cookie from "js-cookie";
 import EventEmitter from "events";
-import gapi from "./gapi";
 import Router from "next/router";
 
 const CURRENT_USER = gql`
@@ -54,10 +53,10 @@ class Auth extends EventEmitter{
 		if(typeof gapi === "undefined")
 			return setTimeout(this.init, 300);
 
-		await gapi.load("auth2", async () => {
+		gapi.load("auth2", async () => {
 			this.google = await gapi.auth2.init({
 				client_id: process.env.GOOGLE_CLIENT_ID,
-				redirect_uri: "https://tendersearch.in"
+				redirect_uri: location.protocol + "//" + location.host // "https://tendersearch.in"
 			});
 
 			this.googleUser = this.google.currentUser.get();
@@ -116,6 +115,7 @@ class Auth extends EventEmitter{
 		const googleUser = await this.google.signIn({
 			prompt: "select_account"
 		});
+		console.log(googleUser);
 		this.googleUser = googleUser;
 		return this.signIn(googleUser);
 	}
@@ -148,7 +148,7 @@ class Auth extends EventEmitter{
 	}
 
 	async signIn(data){
-		const{ access_token: accessToken, id_token: tokenId } = data.tc;
+		const{ access_token: accessToken, id_token: tokenId } = data.xc;
 		return this.login({ accessToken, tokenId });
 	}
 
