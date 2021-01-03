@@ -32,12 +32,13 @@ module.exports = async (req, res) => {
 		return{
 			...item.data,
 			objectID: item.id,
+			openingDate,
+			endDate,
 			opening_timestamp: new Date(openingDate).getTime(),
 			end_timestamp: new Date(endDate).getTime()
 		};
 	});
-	const algoliaResult = await saveToAlgolia(tenders);
-	console.log(algoliaResult);
+	await saveToAlgolia(tenders);
 
 	if(shouldBuild === "build")
 		await triggerBuildHook();
@@ -67,6 +68,7 @@ async function createTenders(data){
 					q.Lambda(
 						"item",
 						{
+							rowId: q.Select(["rowId"], q.Var("item")),
 							name: q.Select(["name"], q.Var("item")),
 							department: q.Select(["department"], q.Var("item")),
 							state: q.Select(["state"], q.Var("item")),
@@ -126,7 +128,8 @@ async function saveToAlgolia(objects){
 		});
 
 		const result = await index.saveObjects(objects);
-		return result;
+		const count = result.objectIDs.length;
+		console.log("Indexed " + count + " objects...");
 	}catch(err){
 		throw err;
 	}

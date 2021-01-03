@@ -1,6 +1,6 @@
 const{ query } = require("faunadb");
 const{ Query, Lambda, Var, Create, Collection, Map: FMap,
-	If, Index, Match, Select, LowerCase, Exists, Update, Let, Get } = query;
+	If, Index, Match, Select, Exists, Update, Let, Get } = query;
 
 module.exports = {
 	name: "create_tenders",
@@ -16,8 +16,8 @@ module.exports = {
 					Let(
 						{ ref:
 							Match(
-								Index("tender_search_by_name"),
-								LowerCase(Select(["name"], Var("tender")))
+								Index("unique_Tender_rowId"),
+								Select(["rowId"], Var("tender"))
 							)
 						},
 						If(

@@ -26,6 +26,7 @@ type Tender{
 	estAmount: Int!
 	emd: Int!
 	url: String!
+	rowId: Int! @unique
 
 	savedBy: [User] @relation
 	createdTender: CreatedTender

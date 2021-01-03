@@ -102,8 +102,8 @@ export function parseSpreadsheet(rows){
 	});
 	delete rows[0];
 
-	return rows.map( tender => {
-		const obj = {};
+	return rows.map( (tender, index) => {
+		const obj = { rowId: index };
 
 		tender.forEach( (value, index) => {
 			obj[keys[index]] = value;
