@@ -45,8 +45,8 @@
     "eslint": "^6.8.0",
     "eslint-config-plazide": "^0.1.6",
     "eslint-plugin-react": "^7.19.0",
-    "fauna-gql-upload": "^1.4.0",
-    "faunadb": "^2.13.1",
+    "fauna-gql-upload": "^1.9.3",
+    "faunadb": "^2.14.2",
     "next-purgecss": "^4.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3"
   }
