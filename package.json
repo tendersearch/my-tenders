@@ -27,7 +27,7 @@
     "next-images": "^1.4.0",
     "next-pwa": "^2.3.3",
     "next-react-svg": "^1.1.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-datetime": "^2.16.3",
     "react-dom": "16.13.1",
