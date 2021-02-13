@@ -54,11 +54,12 @@ class Auth extends EventEmitter{
 			return setTimeout(this.init, 300);
 
 		gapi.load("auth2", async () => {
-			this.google = await gapi.auth2.init({
+			const google = await gapi.auth2.init({
 				client_id: process.env.GOOGLE_CLIENT_ID,
 				redirect_uri: location.protocol + "//" + location.host // "https://tendersearch.in"
 			});
 
+			this.google = google;
 			this.googleUser = this.google.currentUser.get();
 			this.emit("ready");
 		});
@@ -148,12 +149,13 @@ class Auth extends EventEmitter{
 	}
 
 	async signIn(data){
-		const{ access_token: accessToken, id_token: tokenId } = data.xc;
-		return this.login({ accessToken, tokenId });
+		const{ id_token: tokenId } = data.getAuthResponse();
+
+		return this.login({ tokenId });
 	}
 
 	async login(data){
-		const{ accessToken, tokenId } = data;
+		const{ tokenId } = data;
 
 		const response = await fetch("/api/login", {
 			method: "POST",
@@ -161,7 +163,6 @@ class Auth extends EventEmitter{
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				accessToken,
 				tokenId
 			})
 		});

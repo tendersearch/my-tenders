@@ -45,10 +45,10 @@ export default async (req, res) => {
 
 	// Read body
 	const body = req.body;
-	const{ tokenId, accessToken } = body;
+	const{ tokenId } = body;
 
 	// Return error if the required fields are not present.
-	if(!tokenId || !accessToken) return response(400, { message: "Missing tokenId or accessToken" }, res);
+	if(!tokenId) return response(400, { message: "Missing tokenId" }, res);
 
 	// Verify the token
 	const result = await verifyToken(tokenId);
