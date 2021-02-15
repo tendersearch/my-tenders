@@ -107,16 +107,16 @@ class Auth extends EventEmitter{
 	}
 
 	async refresh(){
-		const refreshedUser = await this.google.currentUser.get().reloadAuthResponse();
+		const refreshedUser = await this.google.currentUser.get().reloadAuthResponse(true);
 		this.googleUser = refreshedUser;
 		return refreshedUser;
 	}
 
 	async triggerSignup(){
-		const googleUser = await this.google.signIn({
+		const response = await this.google.signIn({
 			prompt: "select_account"
 		});
-		console.log(googleUser);
+		const googleUser = response.getAuthResponse(true);
 		this.googleUser = googleUser;
 		return this.signIn(googleUser);
 	}
@@ -149,7 +149,7 @@ class Auth extends EventEmitter{
 	}
 
 	async signIn(data){
-		const{ id_token: tokenId } = data.getAuthResponse();
+		const{ id_token: tokenId } = data;
 
 		return this.login({ tokenId });
 	}

@@ -14,9 +14,13 @@ export async function clearTenders(){
 }
 
 export async function listSpreadsheets(user, { refreshed = false } = {}){
+	const instance = await gapi.auth2.getAuthInstance();
+	const currentUser = await instance.currentUser.get().getAuthResponse(true);
+	const token = currentUser.access_token;
+
 	const response = await fetch("https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.spreadsheet'", {
 		headers: {
-			"Authorization": `Bearer ${user.xc.access_token}`
+			"Authorization": `Bearer ${token}`
 		},
 		mode: "cors"
 	});
