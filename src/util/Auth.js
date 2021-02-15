@@ -106,6 +106,14 @@ class Auth extends EventEmitter{
 			return{};
 	}
 
+	async getAccessToken(){
+		const instance = await gapi.auth2.getAuthInstance();
+		const currentUser = await instance.currentUser.get().getAuthResponse(true);
+		const token = currentUser.access_token;
+
+		return token;
+	}
+
 	async refresh(){
 		const refreshedUser = await this.google.currentUser.get().reloadAuthResponse(true);
 		this.googleUser = refreshedUser;
