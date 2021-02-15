@@ -38,10 +38,21 @@ module.exports = async (req, res) => {
 			end_timestamp: new Date(endDate).getTime()
 		};
 	});
-	await saveToAlgolia(tenders);
 
-	if(shouldBuild === "build")
-		await triggerBuildHook();
+	try{
+		await saveToAlgolia(tenders);
+	}catch(err){
+		console.error(err);
+		return response(500, { message: "ALGOLIA_INDEX_ERROR" }, res);
+	}
+
+	try{
+		if(shouldBuild === "build")
+			await triggerBuildHook();
+	}catch(err){
+		console.error(err);
+		return response(500, { message: "HOOK_ERROR" }, res);
+	}
 
 	response(200, { message: "Tenders saved!" }, res);
 };
