@@ -47,7 +47,10 @@ module.exports = async (req, res) => {
 };
 
 async function triggerBuildHook(){
-	const response = await fetch(process.env.ADD_TENDER_HOOK, { method: "POST" });
+	const hook = process.env.ADD_TENDER_HOOK;
+	if(!hook) throw Error("No deploy hook found, cannot trigger new build.");
+
+	const response = await fetch(hook, { method: "POST" });
 	const result = await response.json();
 
 	console.log(result);
